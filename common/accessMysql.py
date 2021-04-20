@@ -1,10 +1,11 @@
 from mysql.connector import connect
 from getpass import getpass
+import sys
 
 userdb=connect(
     host="localhost",
-    user=input("Enter username: "),
-    password=getpass("Enter password: "),
+    user=sys.argv[1],
+    password=sys.argv[2],
     database="stage2"
 )
 
