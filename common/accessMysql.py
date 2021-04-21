@@ -9,28 +9,29 @@ userdb=connect(
     database="stage2"
 )
 
-#Find total row in tabel spot
-with userdb.cursor() as cursor:
-	sqlQuery = "SELECT COUNT(id) FROM spot"
-	cursor.execute(sqlQuery)
-	sqlresult = cursor.fetchone()
-totalRow = sqlresult[0]
-
 def selectData(pageNum, pageInp, keyWord):	#供"/api/attractions"使用
-	if keyWord:
-		inputQuery = "SELECT * FROM spot WHERE id BETWEEN %s AND %s AND name LIKE %s"
-		inputValue = ((pageNum*pageInp)+1, pageNum*(pageInp+1), ("%"+keyWord+"%"))
+	if keyWord:								#pageNum=12 pageInp=user input number(start from 0)
+		inputQuery = "SELECT * FROM spot WHERE name LIKE %s"
+		inputValue = (("%"+keyWord+"%"), )
 	else:
-		inputQuery = "SELECT * FROM spot WHERE id BETWEEN %s AND %s"
-		inputValue = ((pageNum*pageInp)+1, pageNum*(pageInp+1))
-	return sqlSelect(inputQuery, inputValue)
+		inputQuery = "SELECT * FROM spot"
+		inputValue = None
+	allResult = sqlSelect(inputQuery, inputValue)
+	allResultNum = len(allResult)
+	resultPass = pageNum*(pageInp+1)
+	if allResultNum - resultPass > 0:
+		return allResult[pageNum*pageInp:pageNum*(pageInp+1)], pageInp+1
+	else:
+		return allResult[pageNum*pageInp:pageNum*(pageInp+1)], None
 
 def selectById(spotId):					#供"/api/attraction/<int:attractionId>"使用
-	if spotId < 1 or spotId > totalRow:
-		return {"error":True, "message":"景點編號不正確"}
 	inputQuery = "SELECT * FROM spot WHERE id = %s"
 	inputValue = (spotId, )
-	return sqlSelect(inputQuery, inputValue)
+	result = sqlSelect(inputQuery, inputValue)
+	if result:
+		return result
+	else:
+		return {"error":True, "message":"景點編號不正確"}
 
 def sqlSelect(sqlQuery, value):
 	try:

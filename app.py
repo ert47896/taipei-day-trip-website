@@ -26,13 +26,13 @@ def dataWithPage():
 	page = int(request.args.get("page"))
 	keyword = request.args.get("keyword")
 	returnData = selectData(eachPage, page, keyword)
-	if "error" in returnData:
+	if type(returnData) is dict:
 		return jsonify(returnData), 500
 	else:
 		return jsonify(
 			{
-				"nextPage":page+1,
-				"data":returnData
+				"nextPage":returnData[1],
+				"data":returnData[0]
 			}
 		), 200
 
