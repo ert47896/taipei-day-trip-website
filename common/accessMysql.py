@@ -11,10 +11,10 @@ userdb=connect(
 
 def selectData(pageNum, pageInp, keyWord):	#供"/api/attractions"使用
 	if keyWord:								#pageNum=12 pageInp=user input number(start from 0)
-		inputQuery = "SELECT * FROM spot WHERE name LIKE %s LIMIT %s, %s"
+		inputQuery = "SELECT a.* FROM (SELECT id FROM spot WHERE name LIKE %s ORDER BY id LIMIT %s, %s) b JOIN spot a ON a.id = b.id"
 		inputValue = (("%"+keyWord+"%"), pageNum*pageInp, pageNum+1)
 	else:
-		inputQuery = "SELECT * FROM spot LIMIT %s, %s"
+		inputQuery = "SELECT a.* FROM (SELECT id FROM spot ORDER BY id LIMIT %s, %s) b JOIN spot a ON a.id = b.id"
 		inputValue = (pageNum*pageInp, pageNum+1)
 	allResult = sqlSelect(inputQuery, inputValue)
 	allResultNum = len(allResult)
