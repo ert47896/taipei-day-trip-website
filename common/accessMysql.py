@@ -11,18 +11,17 @@ userdb=connect(
 
 def selectData(pageNum, pageInp, keyWord):	#供"/api/attractions"使用
 	if keyWord:								#pageNum=12 pageInp=user input number(start from 0)
-		inputQuery = "SELECT * FROM spot WHERE name LIKE %s"
-		inputValue = (("%"+keyWord+"%"), )
+		inputQuery = "SELECT * FROM spot WHERE name LIKE %s LIMIT %s, %s"
+		inputValue = (("%"+keyWord+"%"), pageNum*pageInp, pageNum+1)
 	else:
-		inputQuery = "SELECT * FROM spot"
-		inputValue = None
+		inputQuery = "SELECT * FROM spot LIMIT %s, %s"
+		inputValue = (pageNum*pageInp, pageNum+1)
 	allResult = sqlSelect(inputQuery, inputValue)
 	allResultNum = len(allResult)
-	resultPass = pageNum*(pageInp+1)
-	if allResultNum - resultPass > 0:
-		return allResult[pageNum*pageInp:pageNum*(pageInp+1)], pageInp+1
+	if allResultNum - pageNum > 0:
+		return allResult[:-1], pageInp+1
 	else:
-		return allResult[pageNum*pageInp:pageNum*(pageInp+1)], None
+		return allResult, None
 
 def selectById(spotId):					#供"/api/attraction/<int:attractionId>"使用
 	inputQuery = "SELECT * FROM spot WHERE id = %s"
