@@ -1,12 +1,15 @@
 from mysql.connector import connect
 from getpass import getpass
 import sys
+import json
 
 userdb=connect(
     host="localhost",
     user=sys.argv[1],
     password=sys.argv[2],
-    database="stage2"
+    database="stage2",
+	pool_name="mypool",
+	pool_size=3
 )
 
 def selectData(pageNum, pageInp, keyWord):	#供"/api/attractions"使用
@@ -49,11 +52,7 @@ def sqlSelect(sqlQuery, value):
 			dictData["mrt"] = result[6]				
 			dictData["latitude"] = float(result[7])
 			dictData["longitude"] = float(result[8])
-			eachUrl = result[9].split(",")
-			eachUrl.pop()
-			dictData["images"] = []
-			for singleUrl in eachUrl:
-				dictData["images"].append(singleUrl)
+			dictData["images"] = json.loads(result[9])
 			responseData.append(dictData)
 		return responseData
 	except:
