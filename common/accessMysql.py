@@ -1,15 +1,15 @@
-from mysql.connector import connect
+from mysql.connector import pooling
 from getpass import getpass
 import sys
 import json
-
-userdb=connect(
-    host="localhost",
+#connection pool let api have more permanent connections to MySQL
+connection_pool = pooling.MySQLConnectionPool(
+	host="localhost",
     user=sys.argv[1],
     password=sys.argv[2],
     database="stage2",
 	pool_name="mypool",
-	pool_size=3
+	pool_size=5
 )
 
 def selectData(pageNum, pageInp, keyWord):	#供"/api/attractions"使用
@@ -21,10 +21,13 @@ def selectData(pageNum, pageInp, keyWord):	#供"/api/attractions"使用
 		inputValue = (pageNum*pageInp, pageNum+1)
 	allResult = sqlSelect(inputQuery, inputValue)
 	allResultNum = len(allResult)
-	if allResultNum - pageNum > 0:
-		return allResult[:-1], pageInp+1
+	if "error" in allResult:
+		return allResult
 	else:
-		return allResult, None
+		if allResultNum - pageNum > 0:
+			return allResult[:-1], pageInp+1
+		else:
+			return allResult, None
 
 def selectById(spotId):					#供"/api/attraction/<int:attractionId>"使用
 	inputQuery = "SELECT * FROM spot WHERE id = %s"
@@ -37,9 +40,11 @@ def selectById(spotId):					#供"/api/attraction/<int:attractionId>"使用
 
 def sqlSelect(sqlQuery, value):
 	try:
-		with userdb.cursor() as cursor:
+		connection_object =  connection_pool.get_connection()
+		with connection_object.cursor() as cursor:
 			cursor.execute(sqlQuery, value)
 			sqlresult = cursor.fetchall()
+		connection_object.close()
 		responseData = []
 		for result in sqlresult:
 			dictData = {}
