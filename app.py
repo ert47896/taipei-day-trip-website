@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, jsonify
+from flask_cors import CORS
 from common.accessMysql import selectData, selectById
 
-app=Flask(__name__)
+app=Flask(__name__, static_folder="public", static_url_path="/")
+CORS(app)									#設定所有的domains and routes接受跨來源資源共用(CORS)
 app.config["JSON_AS_ASCII"]=False			#False避免中文顯示為ASCII編碼
 app.config["TEMPLATES_AUTO_RELOAD"]=True	#True當flask偵測到template有修改會自動更新
 app.config["JSON_SORT_KEYS"]=False			#False不以物件名稱進行排序顯示
