@@ -5,7 +5,6 @@ let keywordInput=null;
 loadAttractions=(pages)=>{
     if(!keywordInput){
         let src="http://35.72.125.150:3000/api/attractions?page="+pages;
-        loadStatusNone=false;           // 更新AJAX讀取狀態為執行中(false)
         fetch(src).then((response)=>{
             return response.json();
         }).then((result)=>{
@@ -17,7 +16,6 @@ loadAttractions=(pages)=>{
         })
     }else{
         let src="http://35.72.125.150:3000/api/attractions?page="+pages+"&keyword="+keywordInput;
-        loadStatusNone=false;           // 更新AJAX讀取狀態為執行中(false)
         fetch(src).then((response)=>{
             return response.json();
         }).then((result)=>{
@@ -47,6 +45,7 @@ window.addEventListener("load", onLoad);
 const scrollLoad=()=>{
     if(window.scrollY > (document.documentElement.scrollHeight-window.innerHeight)*0.75 && loadStatusNone){
         loadAttractions(pageNum);
+        loadStatusNone=false;           // 更新AJAX讀取狀態為執行中(=false)
     }
 };
 window.addEventListener("scroll", scrollLoad);
@@ -67,7 +66,7 @@ searchBtn.addEventListener("click", ()=>{
         textResult.remove();
     }
 })
-// 將api回傳景點資訊呈現在頁面，且更新AJAX讀取狀態為尚未執行(true)
+// 將api回傳景點資訊呈現在頁面，且更新AJAX讀取狀態為尚未執行(=true)
 showAttractions=(data)=>{
     for(i=0;i<data.length;i++){
         let parent=document.querySelector(".mainContainer");
