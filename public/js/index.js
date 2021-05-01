@@ -35,9 +35,10 @@ loadAttractions=(pages)=>{
         })
     }
 }
-// 進入畫面讀取圖片，執行完結束監聽
+// 進入畫面讀取圖片，執行完結束進入畫面監聽
 const onLoad=()=>{
     loadAttractions(pageNum);
+    window.addEventListener("scroll", scrollLoad);  // 開始監聽Y軸滑動
     window.removeEventListener("load", onLoad);
 };
 window.addEventListener("load", onLoad);
@@ -48,7 +49,6 @@ const scrollLoad=()=>{
         loadStatusNone=false;           // 更新AJAX讀取狀態為執行中(=false)
     }
 };
-window.addEventListener("scroll", scrollLoad);
 // 監聽searchBtn
 let searchBtn=document.getElementById("searchBtn");
 searchBtn.addEventListener("click", ()=>{
@@ -65,6 +65,7 @@ searchBtn.addEventListener("click", ()=>{
         let textResult=document.querySelector(".noData");
         textResult.remove();
     }
+    window.addEventListener("scroll", scrollLoad);      // 開始監聽Y軸滑動
 })
 // 將api回傳景點資訊呈現在頁面，且更新AJAX讀取狀態為尚未執行(=true)
 showAttractions=(data)=>{
