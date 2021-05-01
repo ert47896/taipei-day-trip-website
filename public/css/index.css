@@ -207,6 +207,18 @@ footer{
     align-items:center;
     color:#FFFFFF;
 }
+.noData{
+    width:100%;
+    height:41px;
+    font-family:"Noto Sans TC";
+    font-weight:bold;
+    font-size:28px;
+    line-height:86%;
+    color:#757575;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
 @media (min-width:1200px){
     .nav{
         width:1200px;

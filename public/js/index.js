@@ -22,10 +22,18 @@ loadAttractions=(pages)=>{
             return response.json();
         }).then((result)=>{
             pageNum=result.nextPage;
-            showAttractions(result.data);                
-            if(!pageNum){
-                window.removeEventListener("scroll", scrollLoad);   // 無nextpage結束Y軸滑動監聽
-            }
+            if (!result.data.length){
+                let parent=document.querySelector(".mainContainer");
+                let title=document.createElement("div");
+                title.classList.add("noData");
+                title.textContent="查無資料。";
+                parent.appendChild(title);
+            }else{
+                showAttractions(result.data);                
+                if(!pageNum){
+                    window.removeEventListener("scroll", scrollLoad);   // 無nextpage結束Y軸滑動監聽
+                }
+            }            
         })
     }
 }
@@ -48,10 +56,15 @@ searchBtn.addEventListener("click", ()=>{
     keywordInput=document.getElementById("keyword").value;
     pageNum=0;
     loadAttractions(pageNum);
-    // 刪除當下呈現的景點資訊
+    // 刪除當下呈現的景點資訊或「查無資料」文字資訊
     let originalAttractions=document.querySelectorAll(".oneContainer");
-    for(i=0;i<originalAttractions.length;i++){
-        originalAttractions[i].remove();
+    if(originalAttractions.length){
+        for(i=0;i<originalAttractions.length;i++){
+            originalAttractions[i].remove();
+        }
+    }else{
+        let textResult=document.querySelector(".noData");
+        textResult.remove();
     }
 })
 // 將api回傳景點資訊呈現在頁面，且更新AJAX讀取狀態為尚未執行(true)
