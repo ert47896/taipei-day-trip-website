@@ -1,0 +1,266 @@
+body{
+    margin:0px;
+}
+nav{
+    background-color:#ffffff;
+    position:fixed;     /*設定凍結視窗*/
+    top:0;
+    width:100%;
+    z-index:999;        /*設定z軸高度避免凍結視窗內容被body內其他物件覆蓋*/
+}
+.nav{
+    height:34px;
+    display:flex;
+    align-items:center; /*子物件在容器內對齊中線*/
+    margin-left:auto;   /*容器在body水平置中*/
+    margin-right:auto;  /*容器在body水平置中*/
+    margin-top:10px;
+    margin-bottom:10px;
+}
+.navLeftside{
+    height:100%;
+    flex:none;          /*none表不彈性縮放，要給width*/
+    width:150px;
+    font-family:"Noto Sans";
+    font-weight:bold;
+    font-size:30px;
+    line-height:113%;   /*等同113% font-size*/
+    color:#448899;
+    display:flex;       /*文字在容器內垂直置中*/
+    align-items:center;
+}
+.navRightside{
+    height:100%;
+    flex:auto;                         /*auto表彈性縮放，不用給width*/
+    list-style:none;                   /*消除li的點*/
+    padding-inline-start:0px;          /*消除li的前縮排*/
+    display:flex;
+    justify-content:flex-end;          /*物件在容器內水平靠右排列*/
+    align-items:center;                /*物件在容器內垂置置中*/   
+}
+nav>div>ul>li{
+    flex:none;
+    padding:10px;                  /*上下左右都向內縮10px*/
+    font-family:"Noto Sans TC";
+    font-size:16px;
+    line-height:83%;               /*等同83% font-size*/
+    color:#666666;
+    cursor:pointer;                /*改變滑鼠指標*/
+    display:flex;                  /*文字在容器內垂直水平置中*/
+    align-items:center;            /*文字在容器內垂直置中*/
+    justify-content:flex-end;      /*文字在容器內水平靠右*/
+}
+header{
+    margin-top:54px;                /*避免物件被freeze視窗遮擋*/
+    height:320px;
+    background-image:url("/img/welcome.png"),                       /*同時套用兩個背景*/
+        linear-gradient(135deg, #AADDEE 0%, #66AABB 100%);     /*背景漸層效果*/
+    background-repeat:no-repeat, no-repeat;
+    background-position:81.7% 0%, left top;                        /* left:1038/1270=81.7% top:0%*/
+    display:flex;                                                  /*子層物件在header內垂直水平置中*/
+    align-items:center;
+    justify-content:center;
+}
+.headContent{
+    padding:10px;
+    flex:none;
+    display:flex;
+    flex-direction:column;         /*改為直向對齊*/
+    align-items:flex-start;        /*子物件靠左對齊*/
+}
+.slogan{
+    width:100%;          /*繼承父層的width 頁面寬1200px以上為1180px*/
+}
+.sloganMain{
+    height:41px;
+    font-family:"Noto Sans TC";
+    font-weight:bold;
+    font-size:28px;
+    line-height:86%;
+    color:#F8F8F8;
+    text-shadow:0px 0px 30px #AABBCC;     /*設定字體陰影效果*/
+    display:flex;                           /*以flex排版讓字體垂直置中*/
+    align-items:center;
+}
+.sloganSub{
+    height:22px;
+    font-family:"Noto Sans TC";
+    font-size:16px;
+    line-height:83%;
+    color:#F8F8F8;
+    display:flex;               /*以flex排版讓字體垂直置中*/
+    align-items:center;
+    margin-top:15px;
+}
+.search{
+    width:100%;
+    display:flex;               /*以flex排版*/
+    margin-top:25px;
+}
+#keyword{
+    height:16px;
+    width:370px;
+    border:none;                                      /*取消input邊框*/
+    filter:drop-shadow(0px 0px 20px #AABBCC);       /*設定陰影 水平偏移值 垂直偏移值 陰影距離 陰影顏色*/ 
+    border-top-left-radius:5px;                       /*左上圓角*/
+    border-bottom-left-radius:5px;                    /*左下圓角*/
+}
+input[id=keyword]{
+    font-family:"Noto Sans TC";
+    font-weight:bold;
+    font-size:16px;
+    line-height:83%;
+    color:#757575;
+    padding:15px;                       /*input物件欄位內文字內縮15pt*/
+}
+#searchBtn{
+    height:46px;
+    width:60px;
+    border:none;                                    /*取消btn物件邊框*/
+    background-color:#448899;                     /*設定buttom背景顏色*/
+    background-image:url("/img/icon_search.png");   /*增加背景圖片*/
+    background-repeat:no-repeat;                    /*背景圖片不要重複出現*/
+    background-position:50% 50%;                    /*背景圖片置於中間*/
+    border-top-right-radius:5px;                    /*右上角圓邊*/
+    border-bottom-right-radius:5px;                 /*右下角圓邊*/
+    cursor:pointer;                                 /*改變滑鼠指標*/
+    padding:0px;                                    /*取消btn物件預設padding值*/
+}
+.mainContainer{
+    margin-top:40px;                /*main物件與上層間隔40px*/
+    margin-left:auto;               /*main物件在body水平置中*/
+    margin-right:auto;
+    display:flex;    
+    justify-content:flex-start;     /*子物件在父容器由左開始排列*/
+    flex-wrap:wrap;                 /*子物件超過寬度換行*/
+}
+.oneContainer{
+    margin:15px;
+    flex:none;
+    width:270px;
+    display:flex;                   
+    flex-direction:column;          /*改為直向對齊*/
+    border:1px solid #E8E8E8;     /*設定div物件框線*/
+    box-sizing:border-box;          /*div框線併入大小計算*/
+    border-radius:5px;              /*div框線圓角*/
+}
+main>div>img{
+    flex:none;
+    height:160px;
+    object-fit:cover;
+    object-position:center;
+    display:block;                  /*消除img與div間空白*/
+}
+.attraction{
+    display:flex;
+    flex-direction:column;      /*將景點主題與交通資訊、分類改為直向對齊*/
+    margin-left:10px;           /*左邊內縮10px*/
+    margin-right:10px;          /*右邊內縮10px*/
+}
+.title{
+    display:flex;
+    align-items:center;         /*div物件內文字垂直置中*/
+    flex-wrap:wrap;             /*div物件內文字自動換行*/
+    height:22px;
+    font-family:"Noto Sans TC";
+    font-weight:bold;
+    font-size:16px;
+    line-height:83%;
+    color:#757575;
+    padding-top:12px;
+}
+.subtitle{
+    display:flex;
+    justify-content:space-between;  /*讓子物件水平分散(第一個最左 末個最右)*/
+    height:20px;
+    font-family:"Noto Sans TC";
+    font-size:16px;
+    line-height:83%;
+    color:#757575;
+    padding-top:15px;
+    padding-bottom:12px;
+}
+.subLeft{
+    display:flex;
+    align-items:center;     /*讓div內文字垂直置中*/
+}
+.subRight{
+    display:flex;
+    align-items:center;         /*讓div內文字垂直置中*/
+    justify-content:flex-end;   /*讓div內文字水平靠右*/
+}
+footer{
+    margin-top:40px;                    /*footer物件與上層間隔40px*/
+    height:104px;
+    background-color:#757575;
+    display:flex;                       /*讓子物件水平垂直置中*/
+    justify-content:center;
+    align-items:center;
+}
+.footerContent{
+    height:24px;
+    font-family:"Noto Sans TC";
+    font-weight:bold;
+    font-size:16px;
+    line-height:83%;
+    display:flex;                       /*align-items:center讓字在div內垂直置中*/
+    align-items:center;
+    color:#FFFFFF;
+}
+.noData{
+    width:100%;
+    height:41px;
+    font-family:"Noto Sans TC";
+    font-weight:bold;
+    font-size:28px;
+    line-height:86%;
+    color:#757575;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+@media (min-width:1200px){
+    .nav{
+        width:1200px;
+    }
+    .headContent{
+        width:1180px;
+    }
+    .mainContainer{
+        width:1200px;
+    }
+}
+@media (max-width:1200px){
+    header{
+        background-position:right bottom, left top;            /*改圖片位置在右下角*/
+    }
+    .headContent{
+        width:88.88%;
+    }
+    .oneContainer{          /*(呈現兩個景點) 45 + 2.5 + 2.5 = 50 */
+        width:45%;          /*單一attraction物件佔畫面45%寬度*/
+        margin-left:2.5%;   /*單一attraction物件左邊界佔畫面2.5%寬度*/
+        margin-right:2.5%;  /*單一attraction物件左邊界佔畫面2.5%寬度*/
+    }
+    main>div>img{
+        height:180px;
+    }
+}
+@media (max-width:600px){
+    #keyword{
+        width:200px;
+    }
+    .oneContainer{          /*(呈現一個景點) 90 + 5 + 5 = 100 */
+        width:90%;          /*單一attraction物件佔畫面90%寬度*/
+        margin-left:5%;     /*單一attraction物件左邊界佔畫面5%寬度*/
+        margin-right:5%;    /*單一attraction物件右邊界佔畫面5%寬度*/
+    }
+    header{
+        background-image:url("/img/welcome_small.png"),                 /*換圖片背景*/
+            linear-gradient(135deg, #AADDEE 0%, #66AABB 100%);     /*背景漸層效果不變*/
+        background-position:right bottom, left top;                    /*改圖片位置在右下角*/
+    }
+    main>div>img{
+        height:200px;
+    }
+}

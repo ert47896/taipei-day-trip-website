@@ -1,7 +1,12 @@
-from flask import Flask, render_template, request, jsonify
-from common.accessMysql import selectData, selectById
+from flask import Flask, render_template, request, jsonify, Blueprint
+from flask_cors import CORS
+from route.attractionApi import attractionsApi, attractionApi
 
-app=Flask(__name__)
+app=Flask(__name__, static_folder="public", static_url_path="/")
+app.register_blueprint(attractionsApi, url_prefix="/api")
+app.register_blueprint(attractionApi, url_prefix="/api")
+
+CORS(app)									#設定所有的domains and routes接受跨來源資源共用(CORS)
 app.config["JSON_AS_ASCII"]=False			#False避免中文顯示為ASCII編碼
 app.config["TEMPLATES_AUTO_RELOAD"]=True	#True當flask偵測到template有修改會自動更新
 app.config["JSON_SORT_KEYS"]=False			#False不以物件名稱進行排序顯示
@@ -19,36 +24,5 @@ def booking():
 @app.route("/thankyou")
 def thankyou():
 	return render_template("thankyou.html")
-
-@app.route("/api/attractions")
-def dataWithPage():
-	eachPage = 12	#每頁12筆資料
-	page = int(request.args.get("page"))
-	keyword = request.args.get("keyword")
-	returnData = selectData(eachPage, page, keyword)
-	if type(returnData) is dict:
-		return jsonify(returnData), 500
-	else:
-		return jsonify(
-			{
-				"nextPage":returnData[1],
-				"data":returnData[0]
-			}
-		), 200
-
-@app.route("/api/attraction/<int:attractionId>")
-def dataWithId(attractionId):
-	returnData = selectById(attractionId)
-	if "error" in returnData:
-		if returnData["message"] == "伺服器錯誤":
-			return jsonify(returnData), 500
-		else:
-			return jsonify(returnData), 400
-	else:
-		return jsonify(
-			{
-				"data":returnData
-			}
-		), 200
 
 app.run(host="0.0.0.0", port=3000)
