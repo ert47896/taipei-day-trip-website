@@ -58,7 +58,10 @@ def sqlSelect(sqlQuery, value):
 			dictData["latitude"] = float(result[7])
 			dictData["longitude"] = float(result[8])
 			dictData["images"] = json.loads(result[9])
+		if len(sqlresult) == 1:
+			return dictData
+		else:
 			responseData.append(dictData)
-		return responseData
+			return responseData
 	except:
 		return {"error":True, "message":"伺服器錯誤"}

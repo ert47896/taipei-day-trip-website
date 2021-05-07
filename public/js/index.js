@@ -78,12 +78,18 @@ showAttractions=(data)=>{
         let subRight=document.createElement("div");
         subRight.classList.add("subRight");
         subRight.textContent=data[i].category;
+        let hyperLink=document.createElement("a");
+        hyperLink.href="/attraction/"+data[i].id;
+        let spanLink=document.createElement("span");
+        spanLink.classList.add("spanLink");
+        hyperLink.appendChild(spanLink);
         subtitle.appendChild(subLeft);
         subtitle.appendChild(subRight);
         attraction.appendChild(title);
         attraction.appendChild(subtitle);
         oneContainer.appendChild(image);
         oneContainer.appendChild(attraction);
+        oneContainer.appendChild(hyperLink);
         parent.appendChild(oneContainer);
     }
     loadStatusNone=true;

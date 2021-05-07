@@ -4,9 +4,13 @@ body{
 nav{
     background-color:#ffffff;
     position:fixed;     /*設定凍結視窗*/
-    top:0;
+    top:0px;
     width:100%;
     z-index:999;        /*設定z軸高度避免凍結視窗內容被body內其他物件覆蓋*/
+}
+#hyperLink{
+    color:inherit;          /*繼承原本的文字顏色(不因超連結變色)*/
+    text-decoration:none;   /*消除超連結底線*/
 }
 .nav{
     height:34px;
@@ -21,6 +25,7 @@ nav{
     height:100%;
     flex:none;          /*none表不彈性縮放，要給width*/
     width:150px;
+    margin:10px;
     font-family:"Noto Sans";
     font-weight:bold;
     font-size:30px;
@@ -38,7 +43,7 @@ nav{
     justify-content:flex-end;          /*物件在容器內水平靠右排列*/
     align-items:center;                /*物件在容器內垂置置中*/   
 }
-nav>div>ul>li{
+.navRightside>li{
     flex:none;
     padding:10px;                  /*上下左右都向內縮10px*/
     font-family:"Noto Sans TC";
@@ -135,6 +140,7 @@ input[id=keyword]{
     flex-wrap:wrap;                 /*子物件超過寬度換行*/
 }
 .oneContainer{
+    position:relative;              /*外層div當作基準元素*/
     margin:15px;
     flex:none;
     width:270px;
@@ -143,8 +149,17 @@ input[id=keyword]{
     border:1px solid #E8E8E8;     /*設定div物件框線*/
     box-sizing:border-box;          /*div框線併入大小計算*/
     border-radius:5px;              /*div框線圓角*/
+    cursor:pointer;
 }
-main>div>img{
+.spanLink{                      /*將span覆蓋整個.oneContainer div*/
+    position:absolute;
+    width:100%;                 /*span高度 100% .oneContainer div*/
+    height:100%;                /*span寬度 100% .oneContainer div*/
+    top:0px;                    /*起點左上角*/
+    left:0px;
+    z-index:1;                  /*讓span向上浮一層*/
+}
+.oneContainer>img{
     flex:none;
     height:160px;
     object-fit:cover;
@@ -165,7 +180,7 @@ main>div>img{
     font-family:"Noto Sans TC";
     font-weight:bold;
     font-size:16px;
-    line-height:83%;
+    line-height:100%;
     color:#757575;
     padding-top:12px;
 }
@@ -242,7 +257,7 @@ footer{
         margin-left:2.5%;   /*單一attraction物件左邊界佔畫面2.5%寬度*/
         margin-right:2.5%;  /*單一attraction物件左邊界佔畫面2.5%寬度*/
     }
-    main>div>img{
+    .oneContainer>img{
         height:180px;
     }
 }
@@ -260,7 +275,7 @@ footer{
             linear-gradient(135deg, #AADDEE 0%, #66AABB 100%);     /*背景漸層效果不變*/
         background-position:right bottom, left top;                    /*改圖片位置在右下角*/
     }
-    main>div>img{
+    .oneContainer>img{
         height:200px;
     }
 }
