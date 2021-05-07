@@ -5,9 +5,9 @@ import json
 #connection pool let api have more permanent connections to MySQL
 connection_pool = pooling.MySQLConnectionPool(
 	host="localhost",
-    user=sys.argv[1],
-    password=sys.argv[2],
-    database="stage2",
+	user=sys.argv[1],
+	password=sys.argv[2],
+	database="stage2",
 	pool_name="mypool",
 	pool_size=5
 )
@@ -32,13 +32,14 @@ def selectData(pageNum, pageInp, keyWord):	#供"/api/attractions"使用
 def selectById(spotId):					#供"/api/attraction/<int:attractionId>"使用
 	inputQuery = "SELECT * FROM spot WHERE id = %s"
 	inputValue = (spotId, )
-	result = sqlSelect(inputQuery, inputValue)
+	forOneId = True
+	result = sqlSelect(inputQuery, inputValue, forOneId)
 	if result:
 		return result
 	else:
 		return {"error":True, "message":"景點編號不正確"}
 
-def sqlSelect(sqlQuery, value):
+def sqlSelect(sqlQuery, value, oneId=False):		#用oneId區別/api/attraction與/api/attractions 資料處理方式
 	try:
 		connection_object =  connection_pool.get_connection()
 		with connection_object.cursor() as cursor:
@@ -58,7 +59,7 @@ def sqlSelect(sqlQuery, value):
 			dictData["latitude"] = float(result[7])
 			dictData["longitude"] = float(result[8])
 			dictData["images"] = json.loads(result[9])
-			if len(sqlresult) == 1:
+			if oneId == True:
 				return dictData
 			else:
 				responseData.append(dictData)
