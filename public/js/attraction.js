@@ -55,7 +55,6 @@ let views={
             circleNode.classList.add("circlePhotoFalse");
             photoNumberCircle.appendChild(circleNode);
         });
-        document.getElementById("date").valueAsDate=new Date();     //預設顯示日期為當日， new Date()為當前時間
     },
     // 更新與景點圖片相關物件顯示
     imageRenew:function(indexNow, total){
