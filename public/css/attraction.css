@@ -77,7 +77,7 @@ nav{
     height:100%;
     object-fit:cover;
     object-position:center;
-    transition:opacity 0.75s ease-in-out;   /*偵測影像opacity變化漸變時間0.75秒，漸變特效緩慢開始緩慢結束*/
+    transition:opacity 0.75s ease-in-out;   /*偵測影像opacity變化漸變時間0.75秒，ease-in-out漸變特效緩慢開始緩慢結束，等同於 cubic-bezier(0.42, 0, 0.58, 1.0)*/
     border-radius:5px;          /*設定圖片圓角*/
 }
 .transparent{
