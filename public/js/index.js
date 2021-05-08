@@ -9,7 +9,6 @@ let models={
     // 向api索取景點資料
     getData:function(pages, keyword=null){
         controllers.loadStatusNone=false;       // 更新AJAX讀取狀態為執行中(=false)
-        console.log(controllers.loadStatusNone);
         let src="http://35.72.125.150:3000/api/attractions?page="+pages;
         if(keyword){
             src += ("&keyword="+keyword);
@@ -19,7 +18,6 @@ let models={
         }).then((result)=>{
             this.data=result.data;
             this.pageNum=result.nextPage;
-            console.log(this.pageNum);
         });
     }
 };
