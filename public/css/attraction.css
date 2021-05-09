@@ -1,0 +1,336 @@
+body{
+    margin:0px;
+}
+nav{
+    background-color:#ffffff;
+    position:fixed;     /*設定凍結視窗(整個nav物件)*/
+    top:0px;            /*置頂*/
+    width:100%;
+    z-index:999;        /*設定z軸高度避免凍結視窗內容被body內其他物件覆蓋*/
+    border-bottom:1px solid #E8E8E8;    /*設定物件底線樣式*/
+}
+#hyperLink{
+    color:inherit;          /*繼承原本的文字顏色(不因超連結變色)*/
+    text-decoration:none;   /*消除超連結底線*/
+}
+.nav{
+    height:34px;
+    display:flex;
+    align-items:center; /*子物件在容器內對齊中線*/
+    margin-left:auto;   /*容器在body水平置中*/
+    margin-right:auto;  /*容器在body水平置中*/
+    margin-top:10px;
+    margin-bottom:10px;
+}
+.navLeftside{
+    height:100%;
+    flex:none;          /*none表不彈性縮放，要給width*/
+    width:150px;
+    margin:10px;
+    font-family:"Noto Sans";
+    font-weight:bold;
+    font-size:30px;
+    line-height:113%;   /*等同113% font-size*/
+    color:#448899;
+    display:flex;       /*文字在容器內垂直置中*/
+    align-items:center;
+}
+.navRightside{
+    height:100%;
+    flex:auto;                         /*auto表彈性縮放，不用給width*/
+    list-style:none;                   /*消除li的點*/
+    padding-inline-start:0px;          /*消除li的前縮排*/
+    display:flex;
+    justify-content:flex-end;          /*物件在容器內水平靠右排列*/
+    align-items:center;                /*物件在容器內垂置置中*/   
+}
+.navRightside>li{
+    flex:none;
+    padding:10px;                  /*上下左右都向內縮10px*/
+    font-family:"Noto Sans TC";
+    font-size:16px;
+    line-height:83%;               /*等同83% font-size*/
+    color:#666666;
+    cursor:pointer;                /*改變滑鼠指標*/
+    display:flex;                  /*文字在容器內垂直水平置中*/
+    align-items:center;            /*文字在容器內垂直置中*/
+    justify-content:flex-end;      /*文字在容器內水平靠右*/
+}
+#imageAndProfile{
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:94px;                /*避免物件被freeze視窗遮擋(54px) 上外邊界40px*/
+    margin-bottom:40px;            /*下外邊界40px*/
+    display:flex;
+    justify-content:space-around;   /*子物件與父容器有間隔，寬度為子物件間一半 15 30 15*/
+    flex-wrap:wrap;                 /*子物件換行*/
+}
+.imageContainer{
+    position:relative;      /*將容器層當作基準元素，給swipe button擺放位置參考*/
+    flex:none;
+    width:540px;
+    height:400px;
+}
+.opaque{
+    position:absolute;          /*將圖片放置在同樣位置*/
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center;
+    transition:opacity 0.75s ease-in-out;   /*偵測影像opacity變化漸變時間0.75秒，ease-in-out漸變特效緩慢開始緩慢結束，等同於 cubic-bezier(0.42, 0, 0.58, 1.0)*/
+    border-radius:5px;          /*設定圖片圓角*/
+}
+.transparent{
+    position:absolute;          /*將圖片放置在同樣位置*/
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center;
+    opacity:0%;
+}
+#buttonSwipeLeft{
+    position:absolute;      /*以容器層左上角為起點，將left button擺放到指定位置*/
+    top:50%;                /*移動到y軸 50% 的位置*/
+    left:10px;              /*移動到x軸 10px 的位置*/            
+    transform:translate(0, -50%);   /*因物件左上角對齊指定位置，所以y軸要往上調整半個物件高度才會符合預期位置*/
+    width:36px;
+    height:36px;
+    border:none;
+    padding:0px;
+    background-image:url("/img/btn_leftArrow.png");
+    opacity:75%;            /*不透明度75%*/
+    border-radius:50%;      /*按鈕呈現圓形(未設定呈方形)*/
+    cursor:pointer;         /*游標經過變手指*/
+}
+#buttonSwipeRight{
+    position:absolute;      /*以容器層左上角為起點，將right button擺放到指定位置*/
+    top:50%;                /*移動到y軸 50% 的位置*/
+    right:10px;             /*移動到x軸距離最右側 -10px 的位置*/
+    transform:translate(0, -50%);   /*因物件左上角對齊指定位置，所以y軸要往上調整半個物件高度才會符合預期位置*/
+    width:36px;
+    height:36px;
+    border:none;
+    padding:0px;
+    background-image:url("/img/btn_rightArrow.png");
+    opacity:75%;            /*不透明度75%*/
+    border-radius:50%;      /*按鈕呈現圓形(未設定呈方形)*/
+    cursor:pointer;         /*游標經過變手指*/
+}
+.photoNumberCircle{
+    position:absolute;      /*以容器層左上角為起點，將顯示影像數量小圓圈擺放到指定位置*/
+    bottom:10px;            /*移動到y軸距離最下側 -10px 的位置*/
+    width:60%;              /*擺放小圈圈的容器寬度為父層寬度60%*/
+    margin-left:20%;        /*左邊界父層寬度20%*/
+    margin-right:20%;       /*右邊界父層寬度20%*/
+    display:flex;
+    justify-content:center; /*整體小圈圈水平置中*/
+    flex-wrap:wrap;         /*小圈圈在容器內換行*/
+}
+.circlePhotoFalse{
+    width:12px;
+    height:12px;
+    background-color:#FFFFFF;
+    border:1px solid #FFFFFF;
+    padding:0px;
+    margin:6px 6px;         
+    opacity:75%;            /*不透明度75%*/
+    border-radius:50%;      /*按鈕呈現圓形(未設定呈方形)*/
+}
+.circlePhotoTrue{
+    width:12px;
+    height:12px;
+    background-color:#000000;
+    border:1px solid #FFFFFF;
+    padding:0px;
+    margin:6px 6px;         
+    opacity:75%;            /*不透明度75%*/
+    border-radius:50%;      /*按鈕呈現圓形(未設定呈方形)*/
+}
+.profile{
+    flex:none;
+    width:600px;
+    font-family:"Noto Sans TC";
+    color:#666666;
+}
+.title{
+    height:33px;
+    font-weight:bold;
+    font-size:24px;
+    line-height:100%;
+    display:flex;           
+    align-items:center;     /*讓div內文字垂直置中*/
+    margin-bottom:15px;     /*與下方物件間隔15px*/
+}
+.subTitle{
+    height:22px;
+    font-size:16px;
+    line-height:83%;
+    display:flex;
+    align-items:center;     /*讓div內文字垂直置中*/
+    margin-bottom:20px;     /*與下方物件間隔20px*/
+}
+#orderForm{
+    background-color:#E8E8E8;
+    border-radius:5px;
+}
+#orderForm>div{
+    padding:15px 20px 0px 20px;
+}
+.formTitle{
+    height:22px;
+    font-weight:bold;
+    font-size:16px;
+    line-height:83%;
+    display:flex;
+    align-items:center;
+}
+.formSubtitle{
+    height:24px;
+    font-size:16px;
+    line-height:125%;
+    display:flex;
+    align-items:center;
+}
+.formInput{
+    display:flex;           /*讓label, input能在同一行*/
+    align-items:center;     /*讓label與input於垂直方向對齊*/
+}
+#date{
+    height:25px;
+    border-width:0px;
+}
+#date::-webkit-calendar-picker-indicator{   /*針對預設日曆icon進行設定*/
+    cursor:pointer;     /*游標經過變手指*/
+}
+input[id="date"]{
+    padding:5px 10px;
+    font-family:"Noto Sans TC";
+    font-size:16px;
+    line-height:100%;
+    color:#000000;
+}
+input[type="radio"]{
+    /*移除input radio原本顯示設定*/
+    appearance:none;
+    /*建立自訂radio顯示設定*/
+    display:inline-block;           /*可設定寬高屬性(block)不會向右占滿整個容器(inline)*/
+    width:22px;
+    height:22px;
+    margin:0px 5px;                 /*左右外層間隔5px*/
+    border:2px solid #FFFFFF;     /*按鈕邊框為白色寬2px*/       
+    background-color:#FFFFFF;     /*按鈕背景為白色*/
+    border-radius:50%;              /*按鈕呈現圓形(未設定呈方形)*/
+    cursor:pointer;                 /*游標經過變手指*/
+}
+input[type="radio"]:checked{
+    background-color:#448899;       /*按鈕被點選後改變背景顏色*/
+}
+.labelText{
+    height:14px;
+    font-size:16px;
+    line-height:13px;
+    display:flex;
+    align-items:center;
+}
+#orderForm>.submitBtn{
+    padding:25px 0px 40px 20px;     /*調整邊界上 右 下 左*/
+}
+#buttonSubmit{
+    width:154px;
+    height:36px;
+    font-family:"Noto Sans TC";
+    font-size:19px;
+    line-height:84%;
+    color:#FFFFFF;                /*文字顏色*/
+    background-color:#448899;
+    border:none;                    /*取消btn物件邊框*/
+    border-radius:5px;              /*按鈕邊框圓角*/
+    padding:0px;                    /*取消btn物件預設padding值*/
+    display:flex;                   /*文字水平垂直置中*/
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;                 /*游標經過變手指*/
+}
+#details{
+    border-top:1px solid #E8E8E8;   /*設定上框線*/
+    padding-top:40px;                   /*設定上內邊界(上框線在邊界外)*/
+    margin-bottom:40px;                 /*設定下外邊界(下框線在邊界內)*/
+    margin-left:auto;                   
+    margin-right:auto;
+}
+#details>div{
+    padding:10px;
+    font-size:16px;
+    font-family:"Noto Sans TC";
+    color:#666666;
+}
+.info{
+    line-height:150%;
+}
+.infoTitle{
+    height:32px;
+    font-weight:bold;
+    line-height:83%;
+    display:flex;
+    align-items:center;
+}
+.infoBottom{
+    padding-bottom:60px;
+}
+footer{
+    height:104px;
+    background-color:#757575;
+    display:flex;                       /*讓子物件水平垂直置中*/
+    justify-content:center;
+    align-items:center;
+}
+.footerContent{
+    height:24px;
+    font-family:"Noto Sans TC";
+    font-weight:bold;
+    font-size:16px;
+    line-height:83%;
+    display:flex;                       /*align-items:center讓字在div內垂直置中*/
+    align-items:center;
+    color:#FFFFFF;
+}
+@media (min-width:1200px){
+    .nav{
+        width:1200px;
+    }
+    #imageAndProfile{
+        width:1200px;
+    }
+    #details{
+        width:1200px;
+    }
+}
+@media (max-width:1200px){
+    .imageContainer{
+        width:95%;          /*呈現圖片佔畫面95%*/
+        margin-left:2.5%;   /*左邊界佔畫面2.5%寬度*/
+        margin-right:2.5%;  /*右邊界佔畫面2.5%寬度*/
+        max-height:400px;   /*避免圖片過長*/
+    }
+    .profile{
+        width:95%;          /*呈現導覽預定選單佔畫面95%*/
+        margin-left:2.5%;   /*左邊界佔畫面2.5%寬度*/
+        margin-right:2.5%;  /*右邊界佔畫面2.5%寬度*/
+        margin-top:2.5%;    /*新增與圖片間隔*/
+    }
+    #details>div{
+        width:95%;          /*呈現景點介紹內容佔畫面95%*/
+        margin-left:2.5%;   /*左邊界佔畫面2.5%寬度*/
+        margin-right:2.5%;  /*右邊界佔畫面2.5%寬度*/
+        padding:10px 0px;        /*移除左右padding達成文字置中*/
+    }
+}
+@media (max-width:600px){
+    .imageContainer{
+        width:100%;         /*呈現圖片佔畫面100%*/
+        max-height:350px;   /*避免圖片過長*/
+    }
+    .opaque{
+        border-radius:0px;  /*取消圖片圓角設定*/
+    }
+}
