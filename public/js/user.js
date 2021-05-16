@@ -71,20 +71,18 @@ let usercontrollers={
         this.closeBlock();
         this.signOutAction();
     },
-    // 監聽畫面載入確認使用者是否已登入
+    // 確認使用者是否已登入
     loadAction:function(){
-        window.addEventListener("load", function(){
-            usermodels.getData("GET").then(()=>{
-                if (usermodels.data.data==="null"){
-                    //show 登入註冊 hide 登出帳號  
-                    userviews.showBlock("getSignBlock");
-                    userviews.hideBlock("getSignOut");
-                }else{
-                    //show 登出帳號 hide 登入註冊
-                    userviews.showBlock("getSignOut");
-                    userviews.hideBlock("getSignBlock");
-                };
-            });
+        usermodels.getData("GET").then(()=>{
+            if (usermodels.data.data==="null"){
+                //show 登入註冊 hide 登出帳號  
+                userviews.showBlock("getSignBlock");
+                userviews.hideBlock("getSignOut");
+            }else{
+                //show 登出帳號 hide 登入註冊
+                userviews.showBlock("getSignOut");
+                userviews.hideBlock("getSignBlock");
+            };
         });
     },
     // 監聽使用者點擊[登入/註冊]按鈕顯示Sign In介面    
