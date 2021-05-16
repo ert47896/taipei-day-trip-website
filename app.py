@@ -1,9 +1,11 @@
 from flask import Flask, render_template, request, jsonify, Blueprint
 from flask_cors import CORS
+from flask_restful import Api
 from route.attractionApi import attractionsApi, attractionApi
 from route.userApi import userApi
 
-app=Flask(__name__, static_folder="public", static_url_path="/")
+app = Flask(__name__, static_folder="public", static_url_path="/")
+api = Api(app)
 
 CORS(app)									#設定所有的domains and routes接受跨來源資源共用(CORS)
 app.config["JSON_AS_ASCII"]=False			#False避免中文顯示為ASCII編碼
@@ -27,6 +29,6 @@ def thankyou():
 #Api
 app.register_blueprint(attractionsApi, url_prefix="/api")
 app.register_blueprint(attractionApi, url_prefix="/api")
-app.register_blueprint(userApi, url_prefix="/api")
+api.add_resource(userApi, "/api/user")
 
 app.run(host="0.0.0.0", port=3000)
