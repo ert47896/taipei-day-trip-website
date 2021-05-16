@@ -6,7 +6,7 @@ nav{
     position:fixed;     /*設定凍結視窗(整個nav物件)*/
     top:0px;            /*置頂*/
     width:100%;
-    z-index:999;        /*設定z軸高度避免凍結視窗內容被body內其他物件覆蓋*/
+    z-index:1;        /*設定z軸高度避免凍結視窗內容被body內其他物件覆蓋*/
     border-bottom:1px solid #E8E8E8;    /*設定物件底線樣式*/
 }
 #hyperLink{
@@ -52,9 +52,6 @@ nav{
     line-height:83%;               /*等同83% font-size*/
     color:#666666;
     cursor:pointer;                /*改變滑鼠指標*/
-    display:flex;                  /*文字在容器內垂直水平置中*/
-    align-items:center;            /*文字在容器內垂直置中*/
-    justify-content:flex-end;      /*文字在容器內水平靠右*/
 }
 #imageAndProfile{
     margin-left:auto;
@@ -185,7 +182,6 @@ nav{
     align-items:center;
 }
 .formSubtitle{
-    height:24px;
     font-size:16px;
     line-height:125%;
     display:flex;
@@ -252,7 +248,7 @@ input[type="radio"]:checked{
     cursor:pointer;                 /*游標經過變手指*/
 }
 #details{
-    border-top:1px solid #E8E8E8;   /*設定上框線*/
+    border-top:1px solid #E8E8E8;     /*設定上框線*/
     padding-top:40px;                   /*設定上內邊界(上框線在邊界外)*/
     margin-bottom:40px;                 /*設定下外邊界(下框線在邊界內)*/
     margin-left:auto;                   

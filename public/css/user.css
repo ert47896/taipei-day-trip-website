@@ -1,0 +1,91 @@
+.signBlock{
+    position:fixed;                     /*以視窗左上角為起點，將sign面板擺到指定位置*/
+    top:80px;                           /*移動到y軸 80px 的位置*/
+    left:50%;                           /*移動到x軸 50% 的位置*/
+    transform:translate(-50%, 0);       /*因物件左上角對齊指定位置，所以x軸要往左調整半個物件寬度才會符合預期位置*/
+    display:none;
+    width:340px;
+    background-color:#FFFFFF;
+    border-radius:6px;                  /*邊框圓角*/
+    box-shadow:0px 4px 60px #AAAAAA;  /*陰影效果*/
+}
+.topBorder{
+    height:10px;
+    background-image:linear-gradient(270deg, #337788 0%, #66AABB 100%); /*背景漸層色*/
+    border-top-left-radius:6px;     /*左上漸變色圓角*/
+    border-top-right-radius:6px;    /*右上漸變色圓角*/
+}
+.accountContainer{
+    position:relative;          /*將容器層當作基準元素，給X擺放位置參考*/
+    font-family:"Noto Sans TC";
+}
+.closeBtn{
+    position:absolute;          /*以容器層左上角為起點，將X擺放到指定位置*/
+    top:10px;                   /*距離頂部10px*/
+    right:10px;                 /*距離右側10px*/
+    width:30px;
+    height:30px;
+    background-image:url("/img/icon_close.png");    /*將X以背景圖呈現*/
+    background-repeat:no-repeat;                    /*背景圖不要重複出現*/
+    background-position:50% 50%;                    /*背景圖置於容器中間*/
+    cursor:pointer;             /*改變滑鼠指標*/
+}
+.accountTitle{
+    padding:15px;
+    font-weight:bold;
+    font-size:24px;
+    text-align:center;      /*文字水平置中*/
+    color:#666666;
+}
+.inputForm{
+    padding:0px 15px;
+}
+.inputForm>input{
+    width:310px;
+    padding:0px;            /*取消input預設padding*/
+    box-sizing:border-box;  /*將框線也納入物件寬度*/
+    border:1px solid #CCCCCC;
+    border-radius:5px;
+    margin-bottom:10px;     /*下外邊界10px*/
+}
+input[type="text"], input[type="password"], input[type="email"]{
+    font-family:"Noto Sans TC";
+    font-size:16px;
+    color:#666666;
+    padding:15px;       /*文字上下左右內縮15px*/  
+}
+.signBtn{
+    width:310px;
+    border:none;        /*取消btn物件邊框*/
+    background-color:#448899;     /*設定buttom背景顏色*/
+    border-radius:5px;              /*設定btn圓角*/
+    font-size:19px;
+    font-family:"Noto Sans TC";
+    color:#FFFFFF;
+    padding:10px 20px;              /*改變文字邊界上下10px 左右20px*/
+    cursor:pointer;                 /*改變滑鼠指標*/
+}
+.changeBlock{
+    font-size:16px;
+    padding:10px 0 15px 0;  /*內邊界上下15px*/
+    text-align:center;      /*文字在容器內水平置中*/
+    cursor:pointer;         /*改變滑鼠指標*/
+}
+.errorAlert{
+    display:none;           /*先隱藏被觸發再出現*/
+    padding-top:10px;       /*內邊界上10px*/
+    text-align:center;      /*文字在容器內水平置中*/
+    color:red;
+}
+.successAlert{
+    display:none;           /*先隱藏被觸發再出現*/
+    padding-top:10px;       /*內邊界上10px*/
+    text-align:center;      /*文字在容器內水平置中*/
+    color:#00BB00;
+}
+.signHide{
+    display:none;
+}
+.showElement{               /*用於控制物件顯示(新增class) 消失(移除class)*/
+    display:block;          /*顯示物件*/
+}

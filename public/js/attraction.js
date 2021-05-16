@@ -1,8 +1,8 @@
 // Models
 let models={
     data:null,
-    // 向api索取該id景點資料
-    getData:function(urlId){
+    // 向attraction API索取該id景點資料
+    attractionApi:function(urlId){
         let src=window.location.origin+"/api"+urlId;   //window.location.origin 伺服器主機網址
         return fetch(src).then((response)=>{
             return response.json();
@@ -89,13 +89,13 @@ let views={
             costText.textContent="新台幣 2500 元";
         };
         costLabel.insertAdjacentElement("afterend", costText);
-    }    
+    }
 };
 // Controllers
 let controllers={
-    // 初始化函式 呈現景點資料與圖片及圓點位置後 啟動物件監聽
+    // 初始化函式 呈現景點資料與圖片及圓點位置後 啟動物件監聽(日期 圖片左右 登入/註冊 sign面板部分)
     init:function(){
-        models.getData(window.location.pathname).then(()=>{
+        models.attractionApi(window.location.pathname).then(()=>{
             views.renderData(models.data);
             views.imageRenew(views.imageNumberNow, views.imageNumberTotal);
         }).then(()=>{
@@ -106,7 +106,7 @@ let controllers={
     },
     // 監聽使用者選擇上午或下午顯示價格
     timeIntervalListener:function(){
-        let timeIntervalRadio=document.getElementsByName("timeInterval");
+        const timeIntervalRadio=document.getElementsByName("timeInterval");
         timeIntervalRadio.forEach((radio)=>{
             radio.addEventListener("click", function(){
                 views.changePrice(radio.value);
@@ -115,7 +115,7 @@ let controllers={
     },
     // 監聽使用者點擊左滑按鈕
     leftButtonListener:function(){
-        let leftbtn=document.getElementById("buttonSwipeLeft");
+        const leftbtn=document.getElementById("buttonSwipeLeft");
         leftbtn.addEventListener("click", function(){
             views.imageNumberNow -= 1;
             views.imagePassed();
@@ -124,7 +124,7 @@ let controllers={
     },
     // 監聽使用者點擊右滑按鈕
     rightButtonListener:function(){
-        let rightbtn=document.getElementById("buttonSwipeRight");
+        const rightbtn=document.getElementById("buttonSwipeRight");
         rightbtn.addEventListener("click", function(){
             views.imageNumberNow += 1;
             views.imagePassed();

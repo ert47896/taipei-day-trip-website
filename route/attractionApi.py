@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from module.accessMysql import selectData, selectById
+from module.attractionMysql import selectData, selectById
 
 attractionsApi = Blueprint("attractionsApi", __name__)
 attractionApi = Blueprint("attractionApi", __name__)

@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify, Blueprint
 from flask_cors import CORS
 from route.attractionApi import attractionsApi, attractionApi
+from route.userApi import userApi
 
 app=Flask(__name__, static_folder="public", static_url_path="/")
 
@@ -26,5 +27,6 @@ def thankyou():
 #Api
 app.register_blueprint(attractionsApi, url_prefix="/api")
 app.register_blueprint(attractionApi, url_prefix="/api")
+app.register_blueprint(userApi, url_prefix="/api")
 
 app.run(host="0.0.0.0", port=3000)

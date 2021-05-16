@@ -1,16 +1,5 @@
-from mysql.connector import pooling
-from getpass import getpass
-import sys
+from module.connectMysql import connection_pool
 import json
-#connection pool let api have more permanent connections to MySQL
-connection_pool = pooling.MySQLConnectionPool(
-	host="localhost",
-	user=sys.argv[1],
-	password=sys.argv[2],
-	database="stage2",
-	pool_name="mypool",
-	pool_size=5
-)
 
 def selectData(pageNum, pageInp, keyWord):	#供"/api/attractions"使用
 	if keyWord:								#pageNum=12 pageInp=user input number(start from 0)
@@ -41,7 +30,7 @@ def selectById(spotId):					#供"/api/attraction/<int:attractionId>"使用
 
 def sqlSelect(sqlQuery, value, oneId=False):		#用oneId區別/api/attraction與/api/attractions 資料處理方式
 	try:
-		connection_object =  connection_pool.get_connection()
+		connection_object = connection_pool.get_connection()
 		with connection_object.cursor() as cursor:
 			cursor.execute(sqlQuery, value)
 			sqlresult = cursor.fetchall()
