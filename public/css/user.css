@@ -8,6 +8,7 @@
     background-color:#FFFFFF;
     border-radius:6px;                  /*邊框圓角*/
     box-shadow:0px 4px 60px #AAAAAA;  /*陰影效果*/
+    z-index:2;                          /*設定z軸高度避免被body內其他物件覆蓋*/
 }
 .topBorder{
     height:10px;

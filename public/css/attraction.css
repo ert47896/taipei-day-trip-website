@@ -6,7 +6,7 @@ nav{
     position:fixed;     /*設定凍結視窗(整個nav物件)*/
     top:0px;            /*置頂*/
     width:100%;
-    z-index:1;        /*設定z軸高度避免凍結視窗內容被body內其他物件覆蓋*/
+    z-index:2;        /*設定z軸高度避免凍結視窗內容被body內其他物件覆蓋*/
     border-bottom:1px solid #E8E8E8;    /*設定物件底線樣式*/
 }
 #hyperLink{

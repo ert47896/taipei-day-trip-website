@@ -6,7 +6,7 @@ nav{
     position:fixed;     /*設定凍結視窗*/
     top:0px;
     width:100%;
-    z-index:1;        /*設定z軸高度避免凍結視窗內容被body內其他物件覆蓋*/
+    z-index:2;        /*設定z軸高度避免凍結視窗內容被body內其他物件覆蓋*/
 }
 #hyperLink{
     color:inherit;          /*繼承原本的文字顏色(不因超連結變色)*/
