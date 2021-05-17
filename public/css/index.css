@@ -6,7 +6,7 @@ nav{
     position:fixed;     /*設定凍結視窗*/
     top:0px;
     width:100%;
-    z-index:999;        /*設定z軸高度避免凍結視窗內容被body內其他物件覆蓋*/
+    z-index:2;        /*設定z軸高度避免凍結視窗內容被body內其他物件覆蓋*/
 }
 #hyperLink{
     color:inherit;          /*繼承原本的文字顏色(不因超連結變色)*/
@@ -51,9 +51,6 @@ nav{
     line-height:83%;               /*等同83% font-size*/
     color:#666666;
     cursor:pointer;                /*改變滑鼠指標*/
-    display:flex;                  /*文字在容器內垂直水平置中*/
-    align-items:center;            /*文字在容器內垂直置中*/
-    justify-content:flex-end;      /*文字在容器內水平靠右*/
 }
 header{
     margin-top:54px;                /*避免物件被freeze視窗遮擋*/

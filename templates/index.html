@@ -3,8 +3,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <title>Taipei Trip 台北一日遊</title>
+    <title>Taipei Trip 台北一日遊</title>    
     <link href="/css/index.css" rel="stylesheet" type="text/css" media="all" />    
+    <link href="/css/user.css" rel="stylesheet" type="text/css" media="all" />
+    <script defer src="/js/user.js"></script>
+    <script defer src="/js/index.js"></script>
 </head>
 <body>
     <nav>
@@ -12,7 +15,8 @@
             <div class="navLeftside"><a id=hyperLink href="/">台北一日遊</a></div>
             <ul class="navRightside">
                 <li>預定行程</li>
-                <li>登入/註冊</li>
+                <li class="signHide" id="getSignBlock">登入/註冊</li>
+                <li class="signHide" id="getSignOut">登出帳號</li>    
             </ul>            
         </div>
     </nav>
@@ -31,6 +35,35 @@
     <footer>
         <div class="footerContent">COPYRIGHT © 2021 台北一日遊</div>
     </footer>
-    <script src="/js/index.js"></script>
+    <div class="signBlock" id="signInBlock">
+        <div class="topBorder"></div>
+        <div class="accountContainer">
+            <div class="closeBtn"></div>
+            <div class="accountTitle">登入會員帳號</div>
+            <form class="inputForm" id="signInForm">
+                <input type="email" name="email" placeholder="輸入電子信箱" />
+                <input type="password" name="password" placeholder="輸入密碼" /><br/>
+                <button class="signBtn" id="signInBtn">登入帳號</button>
+            </form>
+            <div class="errorAlert" id="signInError"></div>
+            <div class="changeBlock" id="toSignUp">還沒有帳戶？點此註冊</div>
+        </div>
+    </div>
+    <div class="signBlock" id="signUpBlock">
+        <div class="topBorder"></div>
+        <div class="accountContainer">
+            <div class="closeBtn"></div>
+            <div class="accountTitle">註冊會員帳號</div>
+            <form class="inputForm" id="signUpForm">
+                <input type="text" name="nameSignUp" placeholder="輸入姓名" />
+                <input type="email" name="emailSignUp" placeholder="輸入電子信箱（example@email）" />
+                <input type="password" name="passwordSignUp" placeholder="輸入密碼（4~16字）" /><br/>
+                <button class="signBtn" id="signUpBtn">註冊新帳戶</button>
+            </form>
+            <div class="errorAlert" id="signUpError"></div>
+            <div class="successAlert" id="signUpSuccess"></div>
+            <div class="changeBlock" id="toSignIn">已經有帳戶了？點此登入</div>
+        </div>
+    </div>
 </body>
 </html>
