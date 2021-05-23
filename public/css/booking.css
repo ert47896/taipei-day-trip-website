@@ -104,20 +104,19 @@ nav{
     margin-left:30px;
     font-family:"Noto Sans TC";
     font-size:16px;
-    line-height:100%;
+    line-height:150%;
 }
 .title{
-    height:24px;
     font-weight:bold;
     color:#448899;
     display:flex;
     align-items:center;     /*文字垂直向置中*/
+    flex-wrap:wrap;
 }
 .subTitle{
     margin:20px 0px;
     font-weight:bold;
     color:#666666;
-    line-height:150%;
 }
 .subTitleContent{
     font-weight:normal;
