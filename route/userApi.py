@@ -1,33 +1,27 @@
 from flask import request, jsonify, make_response
 from flask_restful import Resource
-import time
 from module.checkdata import checkData
-from module.userMysql import checkSignUp, checkSignIn, searchExpire, changeExpire, cookieExtend
+from module.userMysql import checkSignUp, checkSignIn, changeExpire, checkUserStatus
 
 class userApi(Resource):
     def get(self):
-        cookieValue=request.cookies.get("sessionId")
-        if cookieValue:
-            searchResult = searchExpire(cookieValue)
-            if "error" in searchResult:
-                return {"data":"null"}, 200
-            else:
-                if time.time() > searchResult[3]:
-                    return {"data":"null"}, 200
-                else:
-                    # cookie通過確認且未超過期限，每換一個頁面cookie期限為當下時間+20分鐘
-                    expendTime = cookieExtend(cookieValue)
-                    resp = make_response(jsonify({
-                        "data":{
-                            "id":searchResult[0],
-                            "name":searchResult[1],
-                            "email":searchResult[2]
-                        }
-                    }), 200)
-                    resp.set_cookie(key="sessionId", value=cookieValue, expires=expendTime, samesite="Strict")
-                    return resp
-        else:
+        cookieValue = request.cookies.get("sessionId")
+        # 正常回復(True, searchResult, expendTime)
+        checkResult = checkUserStatus(cookieValue)
+        if checkResult == False:
             return {"data":"null"}, 200
+        else:
+            searchResult = checkResult[1]
+            expendTime = checkResult[2]
+            resp = make_response(jsonify({
+                "data":{
+                    "id":searchResult[0],
+                    "name":searchResult[1],
+                    "email":searchResult[2]
+                }
+            }), 200)
+            resp.set_cookie(key="sessionId", value=cookieValue, expires=expendTime, samesite="Strict")
+            return resp
 
     def post(self):
         #request.get_json()取得post過來的資料
@@ -50,10 +44,10 @@ class userApi(Resource):
             return checkResult, 200
 
     def patch(self):
-        #request.get_json()取得post過來的資料
-        signUpData = request.get_json()
-        email = signUpData["email"]
-        password = signUpData["password"]
+        #request.get_json()取得patch過來的資料
+        signInData = request.get_json()
+        email = signInData["email"]
+        password = signInData["password"]
         if checkData(email, password) == False:
             return {
                 "error": "true",

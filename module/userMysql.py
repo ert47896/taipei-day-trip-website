@@ -6,7 +6,7 @@ from hashlib import sha256
 cookieLiveTime = 20 * 60
 
 def checkSignUp(email, password, name):
-    inputQuery = "SELECT id FROM user WHERE email = %s"
+    inputQuery = "SELECT user_id FROM user WHERE email = %s"
     inputValue = (email, )
     result = sqlSelect(inputQuery, inputValue)
     if result == None:
@@ -19,7 +19,7 @@ def checkSignUp(email, password, name):
         return {"error":"true", "message":"Email重複註冊！"}
 
 def checkSignIn(email, password):
-    inputQuery = "SELECT id FROM user WHERE email = %s AND password = %s"
+    inputQuery = "SELECT user_id FROM user WHERE email = %s AND password = %s"
     inputValue = (email, password)
     result = sqlSelect(inputQuery, inputValue)
     if result == None:
@@ -30,22 +30,42 @@ def checkSignIn(email, password):
         additionString = secrets.token_hex(16)
         cookieValue = cookieValue=sha256((email + additionString).encode("utf-8")).hexdigest()
         cookieExpireTime = time.time() + cookieLiveTime
-        updateQuery = "UPDATE user SET sessionid = %s, session_expiretime = %s WHERE id = %s"
+        updateQuery = "UPDATE user SET sessionid = %s, session_expiretime = %s WHERE user_id = %s"
         updateValue = (cookieValue, cookieExpireTime, result[0])
         updateResult = updateCookie(updateQuery, updateValue)
         return (updateResult, cookieValue, cookieExpireTime)
 
 def searchExpire(cookieId):
-    inputQuery = "SELECT id, name, email, session_expiretime FROM user WHERE sessionid = %s"
+    inputQuery = "SELECT user_id, name, email, session_expiretime FROM user WHERE sessionid = %s"
     inputValue = (cookieId, )
     result = sqlSelect(inputQuery, inputValue)
-    return result
+    if result:
+        return result
+    else:
+        return {"error":"true", "message":"身分驗證錯誤！"}
 
 def changeExpire(cookieId):
     changeQuery = "UPDATE user SET session_expiretime = %s WHERE sessionid = %s"
     changeValue = (0, cookieId)
     changeResult = updateCookie(changeQuery, changeValue)
     return (changeResult, 0)
+
+def checkUserStatus(cookieId, signInStatus=False):
+    if cookieId:
+        # 正常回復(user_id, name, email, session_expiretime)
+        searchResult = searchExpire(cookieId)
+        if "error" in searchResult:
+            return signInStatus
+        else:
+            if time.time() > searchResult[3]:
+                return signInStatus
+            else:
+                # cookie通過確認且未超過期限，每換一個頁面cookie期限為當下時間+20分鐘
+                expendTime = cookieExtend(cookieId)
+                signInStatus=True
+                return signInStatus, searchResult[:3], expendTime
+    else:
+        return signInStatus
 
 def sqlSelect(sqlQuery, value):
     try:

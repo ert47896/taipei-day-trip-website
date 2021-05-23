@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask_restful import Api
 from route.attractionApi import attractionsApi, attractionApi
 from route.userApi import userApi
+from route.bookingApi import bookingApi
 
 app = Flask(__name__, static_folder="public", static_url_path="/")
 api = Api(app)
@@ -30,5 +31,6 @@ def thankyou():
 app.register_blueprint(attractionsApi, url_prefix="/api")
 app.register_blueprint(attractionApi, url_prefix="/api")
 api.add_resource(userApi, "/api/user")
+api.add_resource(bookingApi, "/api/booking")
 
 app.run(host="0.0.0.0", port=3000)

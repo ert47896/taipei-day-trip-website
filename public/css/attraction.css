@@ -281,13 +281,10 @@ footer{
     align-items:center;
 }
 .footerContent{
-    height:24px;
     font-family:"Noto Sans TC";
     font-weight:bold;
     font-size:16px;
-    line-height:83%;
-    display:flex;                       /*align-items:center讓字在div內垂直置中*/
-    align-items:center;
+    line-height:100%;
     color:#FFFFFF;
 }
 @media (min-width:1200px){

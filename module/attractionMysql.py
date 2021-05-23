@@ -3,10 +3,10 @@ import json
 
 def selectData(pageNum, pageInp, keyWord):	#供"/api/attractions"使用
 	if keyWord:								#pageNum=12 pageInp=user input number(start from 0)
-		inputQuery = "SELECT a.* FROM (SELECT id FROM spot WHERE name LIKE %s ORDER BY id LIMIT %s, %s) b JOIN spot a ON a.id = b.id"
+		inputQuery = "SELECT a.* FROM (SELECT attraction_id FROM spot WHERE name LIKE %s ORDER BY attraction_id LIMIT %s, %s) b JOIN spot a ON a.attraction_id = b.attraction_id"
 		inputValue = (("%"+keyWord+"%"), pageNum*pageInp, pageNum+1)
 	else:
-		inputQuery = "SELECT a.* FROM (SELECT id FROM spot ORDER BY id LIMIT %s, %s) b JOIN spot a ON a.id = b.id"
+		inputQuery = "SELECT a.* FROM (SELECT attraction_id FROM spot ORDER BY attraction_id LIMIT %s, %s) b JOIN spot a ON a.attraction_id = b.attraction_id"
 		inputValue = (pageNum*pageInp, pageNum+1)
 	allResult = sqlSelect(inputQuery, inputValue)
 	allResultNum = len(allResult)
@@ -19,7 +19,7 @@ def selectData(pageNum, pageInp, keyWord):	#供"/api/attractions"使用
 			return allResult, None
 
 def selectById(spotId):					#供"/api/attraction/<int:attractionId>"使用
-	inputQuery = "SELECT * FROM spot WHERE id = %s"
+	inputQuery = "SELECT * FROM spot WHERE attraction_id = %s"
 	inputValue = (spotId, )
 	forOneId = True
 	result = sqlSelect(inputQuery, inputValue, forOneId)
