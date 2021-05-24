@@ -4,42 +4,26 @@ let usermodels={
     // 存放api回復狀態碼
     responseStatus:0,
     // 以fetch對user API發送請求
-    getData:function(useMethod, data=null){
-        let src=window.location.origin+"/api/user";   //window.location.origin 伺服器主機網址
+    getData:function(useMethod, reqData=null){
+        let reqSet={};
+        const src=window.location.origin+"/api/user";  //window.location.origin 伺服器主機網址
         if (useMethod==="GET"){
-            return fetch(src).then((response)=>{
-                return response.json();
-            }).then((result)=>{
-                this.data=result;
-            });
+            reqSet={
+                method:useMethod
+            };
         }else{
-            return fetch(src, {
+            reqSet={
                 method:useMethod,
                 headers:{"Content-Type":"application/json"},
-                body:JSON.stringify(data)
-            }).then((response)=>{
-                this.responseStatus=response.status;
-                return response.json();
-            }).then((result)=>{
-                this.data=result;
-            });
-        };        
-    },
-    // 驗證使用者在sign面板輸入資料，因sign in部分不需要user所以給預設值為false並於判斷時直接給正確
-    checkSignData:function(email, password, user=false){
-        // 驗證資料為非空白字元且小於60字元
-        const userRule=/^\S{1,60}$/;
-        let userResult=userRule.test(user);
-        if(user===false){
-            userResult=true;
+                body:JSON.stringify(reqData)
+            };
         };
-        // 驗證資料需包括符號@
-        const emailRule=/@/;
-        const emailResult=emailRule.test(email);
-        // 驗證資料為非空白字元且大於4字元小於16字元
-        const passwordRule=/^\S{4,16}$/;
-        const passwordResult=passwordRule.test(password);
-        return (userResult && emailResult && passwordResult);
+        return fetch(src, reqSet).then((response)=>{
+            this.responseStatus=response.status;
+            return response.json();
+        }).then((result)=>{
+            this.data=result;
+        });
     }
 }
 // Views
@@ -60,7 +44,11 @@ let userviews={
 }
 // Controllers
 let usercontrollers={
-    // 初始化 啟動sign面板內所有按鈕的EventListener
+    // 未登入，因點擊[開始預定行程]按鈕而彈出登入面板，預設為否
+    signinPreSubmit:false,
+    // 未登入，因點擊[預定行程]按鈕而彈出登入面板，預設為否
+    signinPreBooking:false,
+    // 初始化 確認使用者狀態、啟動sign面板內所有按鈕的EventListener
     init:function(){
         this.loadAction();
         this.signListener();
@@ -85,42 +73,45 @@ let usercontrollers={
             };
         });
     },
-    // 監聽使用者點擊[登入/註冊]按鈕顯示Sign In介面    
+    // 監聽使用者點擊[登入/註冊]按鈕顯示Sign In介面
     signListener:function(){
         const getSignBlockBtn=document.getElementById("getSignBlock");
         getSignBlockBtn.addEventListener("click", function(){
+            usercontrollers.signinPreSubmit=false;
+            usercontrollers.signinPreBooking=false;
             usercontrollers.showSignIn();
         });
     },
     // 向Api發送資料處理使用者登入驗證事宜
     signInAction:function(){
-        const signInBtn=document.getElementById("signInBtn");
-        signInBtn.addEventListener("click", function(e){
+        const signInForm=document.getElementById("signInForm");
+        signInForm.addEventListener("submit", function(e){
             // 檢查sign面板如有先前訊息執行隱藏
             usercontrollers.checkPreStatement("signInBlock");
             // 避免form預設發送http請求
             e.preventDefault();
-            const form=document.getElementById("signInForm");
             // 宣告一個FormData集合 用來存放form中的註冊資料(email password)
             // 亦可用getElementById逐一撈出來
-            const formData=new FormData(form);
+            const formData=new FormData(signInForm);
             const email=formData.get("email");
             const password=formData.get("password");
-            // 驗證使用者輸入資料(email, password)，如有不符顯示錯誤訊息並離開
-            const checkResult=usermodels.checkSignData(email, password);
-            if(checkResult===false){
-                userviews.showBlock("signInError", "請檢查輸入資料內容且不得為空白！");
-                return
-            };
             data={
                 "email":email,
                 "password":password
             };
             // fetch後端API驗證資料
             usermodels.getData("PATCH", data).then(()=>{
-                if (usermodels.responseStatus===200){
-                    // 重新整理頁面(觸發"GET"驗證狀態)
-                    location.reload();
+                if (usermodels.responseStatus===200){                    
+                    if (usercontrollers.signinPreBooking){
+                        // 因點擊[預定行程]按鈕而登入，導到booking頁面
+                        window.location.assign(window.location.origin+"/booking");
+                    }else if(usercontrollers.signinPreSubmit){
+                        // 因點擊[開始預定行程]按鈕而登入，向booking API更新資料
+                        controllers.submitDataAction();
+                    }else{
+                        // 重新整理頁面(觸發"GET"驗證狀態)
+                        location.reload();
+                    };
                 }else if(usermodels.responseStatus===400){
                     userviews.showBlock("signInError", usermodels.data.message);
                 }else if(usermodels.responseStatus===500){
@@ -141,25 +132,18 @@ let usercontrollers={
     },
     // 向Api發送資料處理使用者註冊事宜
     signUpAction:function(){
-        const signUpBtn=document.getElementById("signUpBtn");
-        signUpBtn.addEventListener("click", function(event){
+        const signUpForm=document.getElementById("signUpForm");
+        signUpForm.addEventListener("submit", function(event){
             // 檢查sign面板如有先前訊息執行隱藏
             usercontrollers.checkPreStatement("signUpBlock");
             // 避免form預設發送http請求
             event.preventDefault();
-            const form=document.getElementById("signUpForm");
             // 宣告一個FormData集合 用來存放form中的註冊資料(nameSignUp emailSignUp passwordSignUp)
             // 亦可用getElementById逐一撈出來
-            const formData=new FormData(form);
+            const formData=new FormData(signUpForm);
             const emailSignUp=formData.get("emailSignUp");
             const passwordSignUp=formData.get("passwordSignUp");
             const nameSignUp=formData.get("nameSignUp");
-            // 驗證使用者輸入資料(email, password, name)，如有不符顯示錯誤訊息並離開
-            const checkResult=usermodels.checkSignData(emailSignUp, passwordSignUp, nameSignUp);
-            if(checkResult===false){
-                userviews.showBlock("signUpError", "請檢查輸入資料內容且不得為空白！");
-                return
-            };
             data={
                 "name":nameSignUp,
                 "email":emailSignUp,
@@ -227,4 +211,28 @@ let usercontrollers={
         form.reset();
     }    
 }
-usercontrollers.init();     //載入頁面初始化並啟動物件監聽
+let bookingBtnControllers={
+    // 監聽使用者點擊[預定行程]按鈕
+    bookingListener:function(){
+        const bookingBtn=document.getElementById("getBooking");
+        bookingBtn.addEventListener("click", function(){
+            bookingBtnControllers.bookingCheckUser();
+        });
+    },
+    // 檢查使用者登入狀態(使用user.js中function:getData向user API確認使用者狀態)
+    bookingCheckUser:function(){
+        usermodels.getData("GET").then(()=>{
+            if (usermodels.data.data==="null"){
+                // 使用user.js中function:showSignIn呈現登入面板，且是因點擊[預定行程]按鈕而彈出
+                usercontrollers.signinPreBooking=true;              
+                usercontrollers.showSignIn();
+            }else{
+                // 已登入，導向booking頁面
+                window.location.assign(window.location.origin+"/booking");
+            };
+        });
+    }
+}
+// 載入頁面初始化並啟動物件監聽
+usercontrollers.init();
+bookingBtnControllers.bookingListener();

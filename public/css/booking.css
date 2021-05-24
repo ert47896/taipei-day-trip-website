@@ -1,0 +1,255 @@
+body{
+    margin:0px;
+    display:none;
+}
+.bodySign{
+    display:block;
+}
+.bodyNoneData{
+    display:flex;           /*設置footer可適時填充頁面*/
+    flex-direction:column;
+    height:100vh;           /*可視區高度100%，1vh= 可視區高度/100 */
+}
+/* nav */
+nav{
+    background-color:#ffffff;
+    position:fixed;     /*設定凍結視窗(整個nav物件)*/
+    top:0px;            /*置頂*/
+    width:100%;
+    z-index:2;        /*設定z軸高度避免凍結視窗內容被body內其他物件覆蓋*/
+    border-bottom:1px solid #E8E8E8;    /*設定物件底線樣式*/
+}
+#hyperLink{
+    color:inherit;          /*繼承原本的文字顏色(不因超連結變色)*/
+    text-decoration:none;   /*消除超連結底線*/
+}
+.nav{
+    height:34px;
+    display:flex;
+    align-items:center; /*子物件在容器內對齊中線*/
+    margin-left:auto;   /*容器在body水平置中*/
+    margin-right:auto;  /*容器在body水平置中*/
+    margin-top:10px;
+    margin-bottom:10px;
+}
+.navLeftside{
+    height:100%;
+    flex:none;          /*none表不彈性縮放，要給width*/
+    width:150px;
+    margin:10px;
+    font-family:"Noto Sans";
+    font-weight:bold;
+    font-size:30px;
+    line-height:113%;   /*等同113% font-size*/
+    color:#448899;
+    display:flex;       /*文字在容器內垂直置中*/
+    align-items:center;
+}
+.navRightside{
+    height:100%;
+    flex:auto;                         /*auto表彈性縮放，不用給width*/
+    list-style:none;                   /*消除li的點*/
+    padding-inline-start:0px;          /*消除li的前縮排*/
+    display:flex;
+    justify-content:flex-end;          /*物件在容器內水平靠右排列*/
+    align-items:center;                /*物件在容器內垂置置中*/   
+}
+.navRightside>li{
+    flex:none;
+    padding:10px;                  /*上下左右都向內縮10px*/
+    font-family:"Noto Sans TC";
+    font-size:16px;
+    line-height:83%;               /*等同83% font-size*/
+    color:#666666;
+    cursor:pointer;                /*改變滑鼠指標*/
+}
+/* main */
+.mainContainer{
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:94px;        /*避免物件被freeze視窗遮擋(54px) 上外邊界40px*/
+    margin-bottom:40px;     /*下外邊界40px*/
+    display:flex;
+    justify-content:center; /*子物件水平置中*/
+    flex-wrap:wrap;         /*子物件換行*/
+}
+.welcomeTitle{
+    font-family:"Noto Sans TC";
+    font-weight:bold;
+    font-size:19px;
+    line-height:100%;
+    color:#666666;
+    margin-bottom:30px;     /*下外邊界30px*/
+}
+/* main Attraction Profile */
+.attractionProfile{
+    padding:0px 10px;   /*左右內縮10px*/
+    display:flex;
+}
+.nullText{
+    font-family:"Noto Sans TC";
+    font-size:16px;
+    color:#666666;
+}
+.image{
+    flex:none;
+    width:250px;
+    height:200px;
+    object-fit:cover;
+    object-position:center;
+}
+.profile{
+    position:relative;          /*將容器層當作基準元素，給刪除按鈕擺放位置參考*/
+    flex:auto;
+    margin-left:30px;
+    font-family:"Noto Sans TC";
+    font-size:16px;
+    line-height:150%;
+}
+.title{
+    font-weight:bold;
+    color:#448899;
+    display:flex;
+    align-items:center;     /*文字垂直向置中*/
+    flex-wrap:wrap;
+}
+.subTitle{
+    margin:20px 0px;
+    font-weight:bold;
+    color:#666666;
+}
+.subTitleContent{
+    font-weight:normal;
+}
+.deleteBtn{
+    position:absolute;
+    top:0px;                   /*距離頂部0px*/
+    right:0px;                 /*距離右側0px*/
+    width:30px;
+    height:30px;
+    background-image:url("/img/icon_delete.png");    /*將X以背景圖呈現*/
+    background-repeat:no-repeat;                    /*背景圖不要重複出現*/
+    background-position:50% 50%;                    /*背景圖置於容器中間*/
+    cursor:pointer;             /*改變滑鼠指標*/
+}
+/* main Payment Data */
+.formEachSection{
+    padding:40px 0px;  /*上下內邊界40px*/
+    border-top:1px solid #E8E8E8;  /*上框邊線*/
+    margin-left:auto;
+    margin-right:auto;
+    display:flex;
+    justify-content:center;
+}
+.paymentContainer{
+    padding:0px 10px;             /*左右內縮10px*/
+    font-family:"Noto Sans TC";
+    color:#666666;
+    line-height:100%;
+}
+.paymentTitle{
+    font-size:19px;
+    font-weight:bold;
+    height:24px;
+    display:flex;
+    align-items:center;     /*文字垂直向置中*/
+    margin-bottom:20px;     /*設定下外邊界20px*/
+}
+.inputContainer{
+    margin-bottom:15px;     /*設定下外邊界15px*/
+}
+.remindText{
+    line-height:150%;
+    font-size:16px;
+    font-weight:bold;
+}
+.inputContainer>input{
+    padding:0px;            /*取消input預設padding*/
+    box-sizing:border-box;  /*將框線也納入物件寬度*/
+    border:1px solid #E8E8E8;
+    border-radius:5px;
+}
+.inputContainer>input[type="text"], .inputContainer>input[type="email"], .inputContainer>input[type="tel"]{
+    font-family:"Noto Sans TC";
+    font-size:16px;
+    color:#000000;
+    padding:10px;       /*文字上下左右內縮15px*/
+}
+.inputContainer>input[name="creditCardNumber"], .inputContainer>input[name="creditCarTime"], .inputContainer>input[name="creditCarPassword"]{
+    color:#757575;
+}
+.paymentTotal{
+    text-align:right;   /*靠右對齊*/
+    margin-bottom:20px; /*下外邊界20px*/
+}
+.btnContainer{
+    margin-bottom:15px;     /*設定下外邊界15px*/
+    text-align:right;
+}
+.paymentBtn{
+    border:none;        /*取消btn物件邊框*/
+    background-color:#448899;     /*設定buttom背景顏色*/
+    border-radius:5px;              /*設定btn圓角*/
+    font-size:19px;
+    font-family:"Noto Sans TC";
+    color:#FFFFFF;
+    padding:10px 20px;              /*改變文字邊界上下10px 左右20px*/
+    cursor:pointer;                 /*改變滑鼠指標*/
+}
+/* footer */
+footer{
+    flex:auto;
+    min-height:104px;
+    background-color:#757575;
+    display:flex;                   /*讓子物件水平置中*/
+    justify-content:center;
+}
+.footerContent{
+    font-family:"Noto Sans TC";
+    font-weight:bold;
+    font-size:16px;
+    line-height:100%;
+    color:#FFFFFF;
+    margin-top:45px;            /*上外邊界45px*/
+}
+@media (min-width:1200px){
+    .nav, .mainContainer, .formEachSection{
+        width:1200px;
+    }
+    .mainSubContainer, .formEachSubSection{
+        width:1000px;
+    }
+}
+@media (max-width:1200px){
+    .mainContainer{
+        margin:94px 0 40px 0;       /*消除left right: auto*/
+    }
+    .mainSubContainer{
+        width:95%;
+    }
+    .formEachSection{
+        width:95%;
+    }
+    .formEachSubSection{
+        width:100%;
+    }
+}
+@media (max-width:600px){
+    .image{
+        width:100%;
+    }
+    .profile{
+        margin:30px 0 0 0;
+    }
+    .deleteBtn{
+        top:100%;           /*距離頂部0px*/
+        right:0px;          /*距離右側0px*/
+        transform:translate(0, -100%);   /*因物件左上角對齊指定位置，所以y軸要往上調整整個物件高度才會符合預期位置*/
+    }
+    .attractionProfile, .paymentContainer{
+        padding:0px;        /*取消左右邊界10px*/
+    }
+    .attractionProfile{
+        flex-wrap:wrap;
+    }    
+}

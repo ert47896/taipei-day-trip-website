@@ -1,13 +1,27 @@
 // Models
 let models={
     data:null,
-    // 向attraction API索取該id景點資料
-    attractionApi:function(urlId){
-        let src=window.location.origin+"/api"+urlId;   //window.location.origin 伺服器主機網址
-        return fetch(src).then((response)=>{
+    // 存放api回復狀態碼
+    responseStatus:0,
+    // 向API索取資料
+    getAPIData:function(useMethod, srcUrl, reqData=null){
+        let reqSet={};
+        if (useMethod==="GET"){
+            reqSet={
+                method:useMethod
+            };
+        }else{
+            reqSet={
+                method:useMethod,
+                headers:{"Content-Type":"application/json"},
+                body:JSON.stringify(reqData)
+            };
+        };
+        return fetch(srcUrl, reqSet).then((response)=>{
+            this.responseStatus=response.status;
             return response.json();
         }).then((result)=>{
-            this.data=result.data;
+            this.data=result;
         });
     }
 };
@@ -17,6 +31,8 @@ let views={
     imageNumberNow:0,
     // 景點總圖片數
     imageNumberTotal:0,
+    // 使用者選擇行程價格(預設2000元)
+    tripPrice:2000,
     // 將該id景點資料填入頁面
     renderData:function(data){
         let siblingForm=document.querySelector("#orderForm");
@@ -49,6 +65,7 @@ let views={
         data.images.forEach((image)=>{
             let imageNode=document.createElement("img");
             imageNode.src=image;
+            imageNode.alt="Attraction";
             imageNode.classList.add("transparent");
             buttonLeftsibling.insertAdjacentElement("beforebegin", imageNode);
             let circleNode=document.createElement("button");
@@ -75,7 +92,7 @@ let views={
         imageNode.classList.add("transparent");
         circleNode.classList.add("circlePhotoFalse");
     },
-    // 依據使用者選擇顯示價格
+    // 依據使用者選擇顯示價格，並更新變數tripPrice數值
     changePrice:function(timeSection){
         let oldCostText=document.getElementById("costAmount");
         oldCostText.remove();
@@ -84,8 +101,10 @@ let views={
         costText.classList.add("labelText");
         costText.id="costAmount";
         if (timeSection==="morning"){
+            this.tripPrice=2000;
             costText.textContent="新台幣 2000 元";
         }else{
+            this.tripPrice=2500;
             costText.textContent="新台幣 2500 元";
         };
         costLabel.insertAdjacentElement("afterend", costText);
@@ -93,15 +112,22 @@ let views={
 };
 // Controllers
 let controllers={
+    // 該景點頁面於資料庫中景點Id
+    attractionId:null,
+    // orderForm資料
+    orderFormData:{},
     // 初始化函式 呈現景點資料與圖片及圓點位置後 啟動物件監聽(日期 圖片左右 登入/註冊 sign面板部分)
     init:function(){
-        models.attractionApi(window.location.pathname).then(()=>{
-            views.renderData(models.data);
+        let src=window.location.origin+"/api"+window.location.pathname;   //window.location.origin 伺服器主機網址, window.location.pathname 網頁子路徑
+        models.getAPIData("GET", src).then(()=>{
+            views.renderData(models.data.data);
+            this.attractionId=models.data.data.id;
             views.imageRenew(views.imageNumberNow, views.imageNumberTotal);
         }).then(()=>{
             this.timeIntervalListener();
             this.leftButtonListener();
             this.rightButtonListener();
+            this.submitDataListener();
         });
     },
     // 監聽使用者選擇上午或下午顯示價格
@@ -130,6 +156,49 @@ let controllers={
             views.imagePassed();
             views.imageRenew(views.imageNumberNow, views.imageNumberTotal);
         });
+    },
+    // 監聽使用者送出預定行程資料
+    submitDataListener:function(){
+        const orderForm=document.getElementById("orderForm");
+        orderForm.addEventListener("submit", function(event){
+            // 避免form預設發送http請求
+            event.preventDefault();
+            // 宣告一個FormData集合 用來存放form中的預定行程資料(selectDate timeInterval)
+            // 亦可用getElementById逐一撈出來
+            const formData=new FormData(orderForm);
+            controllers.orderFormData["attractionId"]=controllers.attractionId;
+            controllers.orderFormData["date"]=formData.get("selectDate");
+            controllers.orderFormData["time"]=formData.get("timeInterval");
+            controllers.orderFormData["price"]=views.tripPrice;
+            controllers.submitCheckUser();
+        });
+    },
+    // 檢查使用者登入狀態(向user API確認)
+    submitCheckUser:function(){
+        let src=window.location.origin+"/api/user";   //window.location.origin 伺服器主機網址
+        models.getAPIData("GET", src).then(()=>{
+            if (models.data.data==="null"){
+                // 使用user.js中function:showSignIn呈現登入面板，且是因點擊[開始預定行程]按鈕而彈出
+                usercontrollers.signinPreSubmit=true;
+                usercontrollers.showSignIn();
+            }else{
+                // 已登入，向booking API傳送行程資料
+                controllers.submitDataAction();                
+            };
+        });
+    },
+    // 向booking API傳送資料
+    submitDataAction:function(){
+        let src=window.location.origin+"/api/booking";   //window.location.origin 伺服器主機網址
+        models.getAPIData("POST", src, controllers.orderFormData).then(()=>{
+            if (models.responseStatus===200){
+                // 資料輸入成功，導向booking頁面
+                window.location.assign(window.location.origin+"/booking");
+            }else{
+                // 顯示API所回覆錯誤訊息
+                alert(models.data.message);
+            };
+        });        
     }
 };
 controllers.init();     //載入頁面初始化並啟動物件監聽

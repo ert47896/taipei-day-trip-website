@@ -150,10 +150,9 @@ nav{
     color:#666666;
 }
 .title{
-    height:33px;
     font-weight:bold;
     font-size:24px;
-    line-height:100%;
+    line-height:150%;
     display:flex;           
     align-items:center;     /*讓div內文字垂直置中*/
     margin-bottom:15px;     /*與下方物件間隔15px*/
@@ -281,13 +280,10 @@ footer{
     align-items:center;
 }
 .footerContent{
-    height:24px;
     font-family:"Noto Sans TC";
     font-weight:bold;
     font-size:16px;
-    line-height:83%;
-    display:flex;                       /*align-items:center讓字在div內垂直置中*/
-    align-items:center;
+    line-height:100%;
     color:#FFFFFF;
 }
 @media (min-width:1200px){

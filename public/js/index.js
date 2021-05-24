@@ -36,6 +36,7 @@ let views={
             const firstUrl=data[i].images[0];
             let image=document.createElement("img");
             image.src=firstUrl;
+            image.alt="Attraction";
             let attraction=document.createElement("div");
             attraction.classList.add("attraction");
             let title=document.createElement("div");
