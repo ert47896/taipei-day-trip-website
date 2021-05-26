@@ -26,10 +26,6 @@ let views={
     // 顯示景點資料
     renderData:function(data){
         for(i=0;i<data.length;i++){
-            let textResult=document.querySelector(".noData");       //如果前一次查詢無資料，先把"查無資料"文字刪除再呈現景點資訊
-            if(textResult){
-                textResult.remove();
-            };
             let parent=document.querySelector(".mainContainer");
             let oneContainer=document.createElement("div");
             oneContainer.classList.add("oneContainer");
@@ -69,11 +65,15 @@ let views={
     // 顯示無資料
     renderNoneData:function(){
         let parent=document.querySelector(".mainContainer");
-        parent.innerHTML="";
         let title=document.createElement("div");
         title.classList.add("noData");
         title.textContent="查無資料。";
         parent.appendChild(title);
+    },
+    // 呈現搜尋結果前清空畫面
+    preRenderResult:function(){
+        const parent=document.querySelector(".mainContainer");
+        parent.innerHTML="";
     }
 };
 // Controllers
@@ -97,8 +97,10 @@ let controllers={
             models.pageNum=0;
             models.getData(models.pageNum, models.keywordInput).then(()=>{
                 if(models.data.length){
+                    views.preRenderResult();
                     views.renderData(models.data);
                 }else{
+                    views.preRenderResult();
                     views.renderNoneData();
                 };
             });

@@ -157,6 +157,8 @@ nav{
 }
 .inputContainer{
     margin-bottom:15px;     /*設定下外邊界15px*/
+    display:flex;           /*設定label跟導入的input可以在同一行*/
+    align-items:center;
 }
 .remindText{
     line-height:150%;
@@ -175,8 +177,13 @@ nav{
     color:#000000;
     padding:10px;       /*文字上下左右內縮15px*/
 }
-.inputContainer>input[name="creditCardNumber"], .inputContainer>input[name="creditCarTime"], .inputContainer>input[name="creditCarPassword"]{
-    color:#757575;
+.form-control{          /*設定TapPay fields*/
+    height:40px;
+    width:216px;
+    border:1px solid #E8E8E8;
+    box-sizing:border-box;
+    border-radius:5px;
+    padding:10px;
 }
 .paymentTotal{
     text-align:right;   /*靠右對齊*/
