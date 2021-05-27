@@ -76,6 +76,12 @@ let bookingviews={
         const bodyDOM=document.querySelector("body");
         bodyDOM.classList.add("bodyNoneData");
     },
+    renderError:function(message){
+        const bodyDOM=document.querySelector("body");
+        bodyDOM.classList.add("bodySign");
+        bodyDOM.innerHTML="";
+        bodyDOM.textContent=message;
+    },
     tappayView:function(){
         // TapPay內建輸入表單格式設定
         TPDirect.card.setup({
@@ -230,17 +236,14 @@ let bookingcontrollers={
     orderDataAction:function(){
         const src=window.location.origin+"/api/orders";   //window.location.origin 伺服器主機網址
         bookingmodels.getAPIData("POST", src, bookingcontrollers.orderFormData).then(()=>{
-            if (models.responseStatus===200){
-                // 資料輸入成功，接收付款結果，導向thankyou頁面
-                // window.location.assign(window.location.origin+"/booking");
+            if (bookingmodels.responseStatus===200){
+                // 資料輸入成功，接收付款結果，導向thankyou頁面(訂單編號)，bookingmodels.data.data.number=order API回傳訂單編號
+                window.location.assign(window.location.origin+"/thankyou?number="+bookingmodels.data.data.number);
             }else{
                 // 資料輸入失敗，頁面呈現錯誤訊息
-                const bodyDOM=document.querySelector("body");
-                bodyDOM.innerHTML="";
-                bodyDOM.textContent=models.data.message;
+                views.renderError(models.data.message);
             };
         })
     }
-
 }
 bookingcontrollers.init();

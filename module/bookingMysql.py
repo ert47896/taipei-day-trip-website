@@ -4,7 +4,7 @@ from datetime import datetime
 
 def submitBookingData(userId, attractionId, tripDate, tripTime, tripPrice):
     # 確認有無前次預訂資料
-    inputQuery = "SELECT order_id FROM booking WHERE user_id = %s"
+    inputQuery = "SELECT booking_id FROM booking WHERE user_id = %s"
     inputValue = (userId, )
     insertQuery = "INSERT INTO booking (user_id, attraction_id, trip_date, trip_time, trip_price) VALUES (%s, %s, %s, %s, %s)"
     insertValue = (userId, attractionId, tripDate, tripTime, tripPrice)
@@ -16,11 +16,7 @@ def submitBookingData(userId, attractionId, tripDate, tripTime, tripPrice):
         # 回傳伺服器內部錯誤訊息
         return result
     else:
-        deleteResult = deletPreData(userId)
-        # deleteQuery = "DELETE FROM booking WHERE user_id = %s"
-        # deleteValue = (userId, )
-        # # 刪除前次資料後，輸入資料
-        # deleteResult = deleteRowData(deleteQuery, deleteValue)
+        deleteResult = deletePreData(userId)
         if "error" in deleteResult:
             # 回傳伺服器內部錯誤訊息            
             return deleteResult
@@ -52,7 +48,7 @@ def getAttractionData(userId):
         data["price"] = result[6]
         return {"data":data}
 
-def deletPreData(userId):
+def deletePreData(userId):
     deleteQuery = "DELETE FROM booking WHERE user_id = %s"
     deleteValue = (userId, )
     # 刪除前次資料後，輸入資料

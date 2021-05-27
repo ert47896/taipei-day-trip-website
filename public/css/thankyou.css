@@ -64,6 +64,7 @@ nav{
     cursor:pointer;                /*改變滑鼠指標*/
 }
 /* main */
+/* main */
 .mainContainer{
     margin-left:auto;
     margin-right:auto;
@@ -77,7 +78,7 @@ nav{
     font-family:"Noto Sans TC";
     font-weight:bold;
     font-size:19px;
-    line-height:100%;
+    line-height:150%;
     color:#666666;
     margin-bottom:30px;     /*下外邊界30px*/
 }
@@ -121,87 +122,11 @@ nav{
 .subTitleContent{
     font-weight:normal;
 }
-.deleteBtn{
-    position:absolute;
-    top:0px;                   /*距離頂部0px*/
-    right:0px;                 /*距離右側0px*/
-    width:30px;
-    height:30px;
-    background-image:url("/img/icon_delete.png");    /*將X以背景圖呈現*/
-    background-repeat:no-repeat;                    /*背景圖不要重複出現*/
-    background-position:50% 50%;                    /*背景圖置於容器中間*/
-    cursor:pointer;             /*改變滑鼠指標*/
-}
-/* main Payment Data */
-.formEachSection{
+.contactContainer{
     padding:40px 0px;  /*上下內邊界40px*/
     border-top:1px solid #E8E8E8;  /*上框邊線*/
     margin-left:auto;
     margin-right:auto;
-    display:flex;
-    justify-content:center;
-}
-.paymentContainer{
-    padding:0px 10px;             /*左右內縮10px*/
-    font-family:"Noto Sans TC";
-    color:#666666;
-    line-height:100%;
-}
-.paymentTitle{
-    font-size:19px;
-    font-weight:bold;
-    height:24px;
-    display:flex;
-    align-items:center;     /*文字垂直向置中*/
-    margin-bottom:20px;     /*設定下外邊界20px*/
-}
-.inputContainer{
-    margin-bottom:15px;     /*設定下外邊界15px*/
-    display:flex;           /*設定label跟導入的input可以在同一行*/
-    align-items:center;
-}
-.remindText{
-    line-height:150%;
-    font-size:16px;
-    font-weight:bold;
-}
-.inputContainer>input{
-    padding:0px;            /*取消input預設padding*/
-    box-sizing:border-box;  /*將框線也納入物件寬度*/
-    border:1px solid #E8E8E8;
-    border-radius:5px;
-}
-.inputContainer>input[type="text"], .inputContainer>input[type="email"], .inputContainer>input[type="tel"]{
-    font-family:"Noto Sans TC";
-    font-size:16px;
-    color:#000000;
-    padding:10px;       /*文字上下左右內縮15px*/
-}
-.form-control{          /*設定TapPay fields*/
-    height:40px;
-    width:216px;
-    border:1px solid #E8E8E8;
-    box-sizing:border-box;
-    border-radius:5px;
-    padding:10px;
-}
-.paymentTotal{
-    text-align:right;   /*靠右對齊*/
-    margin-bottom:20px; /*下外邊界20px*/
-}
-.btnContainer{
-    margin-bottom:15px;     /*設定下外邊界15px*/
-    text-align:right;
-}
-.paymentBtn{
-    border:none;        /*取消btn物件邊框*/
-    background-color:#448899;     /*設定buttom背景顏色*/
-    border-radius:5px;              /*設定btn圓角*/
-    font-size:19px;
-    font-family:"Noto Sans TC";
-    color:#FFFFFF;
-    padding:10px 20px;              /*改變文字邊界上下10px 左右20px*/
-    cursor:pointer;                 /*改變滑鼠指標*/
 }
 /* footer */
 footer{
@@ -220,10 +145,10 @@ footer{
     margin-top:45px;            /*上外邊界45px*/
 }
 @media (min-width:1200px){
-    .nav, .mainContainer, .formEachSection{
+    .nav, .mainContainer{
         width:1200px;
     }
-    .mainSubContainer, .formEachSubSection{
+    .mainSubContainer, .contactContainer{
         width:1000px;
     }
 }
@@ -231,11 +156,8 @@ footer{
     .mainContainer{
         margin:94px 0 40px 0;       /*消除left right: auto*/
     }
-    .mainSubContainer, .formEachSection{
+    .mainSubContainer, .contactContainer{
         width:95%;
-    }
-    .formEachSubSection{
-        width:100%;
     }
 }
 @media (max-width:600px){
@@ -244,16 +166,9 @@ footer{
     }
     .profile{
         margin:30px 0 0 0;
-    }
-    .deleteBtn{
-        top:100%;           /*距離頂部0px*/
-        right:0px;          /*距離右側0px*/
-        transform:translate(0, -100%);   /*因物件左上角對齊指定位置，所以y軸要往上調整整個物件高度才會符合預期位置*/
-    }
-    .attractionProfile, .paymentContainer{
-        padding:0px;        /*取消左右邊界10px*/
-    }
-    .attractionProfile{
-        flex-wrap:wrap;
     }    
+    .attractionProfile{
+        padding:0px;        /*取消左右邊界10px*/
+        flex-wrap:wrap;
+    }
 }
