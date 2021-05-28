@@ -75,14 +75,67 @@ let bookingviews={
         // 調整body的css設定，讓footer自動填滿畫面
         const bodyDOM=document.querySelector("body");
         bodyDOM.classList.add("bodyNoneData");
+    },
+    renderError:function(message){
+        const bodyDOM=document.querySelector("body");
+        bodyDOM.classList.add("bodySign");
+        bodyDOM.innerHTML="";
+        bodyDOM.textContent=message;
+    },
+    tappayView:function(){
+        // TapPay內建輸入表單格式設定
+        TPDirect.card.setup({
+            fields: {
+                number: {
+                    // use css selector
+                    element: ".form-control.card-number",
+                    placeholder: "**** **** **** ****"
+                },
+                expirationDate: {
+                    element: ".form-control.expiration-date",
+                    placeholder: "MM / YY"
+                },
+                ccv: {
+                    element: ".form-control.ccv",
+                    placeholder:"CVV"
+                }
+            },
+            styles: {
+                // 設定付款input
+                "input": {
+                    "font-family": "Noto Sans TC",
+                    "font-size": "16px"
+                },
+                // 輸入時字變黑色
+                ":focus": {
+                    "color": "black"
+                },
+                // 數值符合規範變綠色
+                ".valid": {
+                    "color": "green"
+                },
+                // 數值不符合規範變紅色
+                ".invalid": {
+                    "color": "red"
+                }
+            }
+        });
     }
 }
 // Controllers
 let bookingcontrollers={
+    // 使用者資料
+    userData:null,
+    // 預定行程資料
+    bookingData:null,
+    // request body
+    orderFormData:{},
     // 初始化
     init:function(){
         this.loadCheckSign();
         this.deleteBtn();
+        this.tappayinit();
+        this.submitBtn();
     },
     // 確認使用者是否已登入
     loadCheckSign:function(){
@@ -92,26 +145,30 @@ let bookingcontrollers={
                 // 未登入導向首頁
                 window.location.assign(window.location.origin);
             }else{
-                // 已登入，向booking API讀取資料
+                // 已登入，儲存使用者資料
+                this.userData=bookingmodels.data.data;
+                // 向booking API讀取資料
                 bookingcontrollers.getBookingData();
             };
         });
     },
     getBookingData:function(){
         let src=window.location.origin+"/api/booking";  //window.location.origin 伺服器主機網址
-        // 儲存使用者資料
-        const userData = bookingmodels.data.data;
         bookingmodels.getAPIData("GET", src).then(()=>{
             if (bookingmodels.responseStatus===200){
-                // 讀取資料成功，將資料呈現(分null 訂單)
-                if (bookingmodels.data.data === "null"){
-                    bookingviews.renderNullData(userData);
+                // 讀取資料成功，儲存訂單資料
+                this.bookingData=bookingmodels.data.data;
+                // 將資料呈現(null 或 有訂單)
+                if (this.bookingData === "null"){
+                    bookingviews.renderNullData(this.userData);
                 }else{
-                    bookingviews.renderData(userData, bookingmodels.data.data);
+                    bookingviews.renderData(this.userData, this.bookingData);
                 };
             }else{
-                // 顯示API所回覆錯誤訊息
-                alert(bookingmodels.data.message);
+                // 資料輸入失敗，頁面呈現錯誤訊息
+                const bodyDOM=document.querySelector("body");
+                bodyDOM.innerHTML="";
+                bodyDOM.textContent=models.data.message;
             };
         });
     },
@@ -123,11 +180,70 @@ let bookingcontrollers={
                 if (bookingmodels.responseStatus===200){
                     location.reload();
                 }else{
-                    // 顯示API所回覆錯誤訊息
-                    alert(bookingmodels.data.message);
+                    // 資料輸入失敗，頁面呈現錯誤訊息
+                    const bodyDOM=document.querySelector("body");
+                    bodyDOM.innerHTML="";
+                    bodyDOM.textContent=models.data.message;
                 };
             });
         });
+    },
+    tappayinit:function(){
+        // 設置金鑰
+        TPDirect.setupSDK(20417, "app_TTWnXjREbHPvX0fyCvYBSfvD4P6tmGBIZGOMTUNTy6vt4855sEziPbFP1s5s", "sandbox");
+        bookingviews.tappayView();
+        TPDirect.card.onUpdate(function(update){
+            const submitButton=document.querySelector(".paymentBtn");
+            // 付款欄位數值都符合規範，[確認訂購並付款]才給點擊
+            if (update.canGetPrime){
+                // Enable submit Button to get prime.
+                submitButton.removeAttribute("disabled");
+            }else{
+                // Disable submit Button to get prime.
+                submitButton.setAttribute("disabled", true);
+            };
+        })
+    },
+    submitBtn:function(){
+        const submitForm=document.querySelector(".formContainer");
+        submitForm.addEventListener("submit", function(event){
+            event.preventDefault();
+            // Get prime
+            TPDirect.card.getPrime((result)=>{
+                if (result.status !== 0){
+                    alert("交易失敗，請重新確認付款資訊！");
+                    return
+                };
+                // 獲得prime value，製作request body
+                bookingcontrollers.orderFormData["prime"]=result.card.prime;
+                // 宣告一個FormData集合 用來存放form中的訂購行程資料(userName userEmail userPhone)
+                // 亦可用getElementById逐一撈出來
+                const formData=new FormData(submitForm);
+                bookingcontrollers.orderFormData["order"]={};
+                bookingcontrollers.orderFormData["contact"]={};
+                bookingcontrollers.orderFormData["order"]["price"]=bookingcontrollers.bookingData["price"];
+                bookingcontrollers.orderFormData["order"]["trip"]=bookingcontrollers.bookingData["attraction"];
+                bookingcontrollers.orderFormData["order"]["date"]=bookingcontrollers.bookingData["date"];
+                bookingcontrollers.orderFormData["order"]["time"]=bookingcontrollers.bookingData["time"];
+                bookingcontrollers.orderFormData["contact"]["name"]=formData.get("userName");
+                bookingcontrollers.orderFormData["contact"]["email"]=formData.get("userEmail");
+                bookingcontrollers.orderFormData["contact"]["phone"]=formData.get("userPhone");
+                bookingcontrollers.orderDataAction();
+            });
+        });
+    },
+    // POST oders API
+    orderDataAction:function(){
+        const src=window.location.origin+"/api/orders";   //window.location.origin 伺服器主機網址
+        bookingmodels.getAPIData("POST", src, bookingcontrollers.orderFormData).then(()=>{
+            if (bookingmodels.responseStatus===200){
+                // 資料輸入成功，接收付款結果，導向thankyou頁面(訂單編號)，bookingmodels.data.data.number=order API回傳訂單編號
+                window.location.assign(window.location.origin+"/thankyou?number="+bookingmodels.data.data.number);
+            }else{
+                // 資料輸入失敗，頁面呈現錯誤訊息
+                views.renderError(models.data.message);
+            };
+        })
     }
 }
 bookingcontrollers.init();

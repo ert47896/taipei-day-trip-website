@@ -115,7 +115,7 @@ let controllers={
     // 該景點頁面於資料庫中景點Id
     attractionId:null,
     // orderForm資料
-    orderFormData:{},
+    bookingFormData:{},
     // 初始化函式 呈現景點資料與圖片及圓點位置後 啟動物件監聽(日期 圖片左右 登入/註冊 sign面板部分)
     init:function(){
         let src=window.location.origin+"/api"+window.location.pathname;   //window.location.origin 伺服器主機網址, window.location.pathname 網頁子路徑
@@ -166,16 +166,16 @@ let controllers={
             // 宣告一個FormData集合 用來存放form中的預定行程資料(selectDate timeInterval)
             // 亦可用getElementById逐一撈出來
             const formData=new FormData(orderForm);
-            controllers.orderFormData["attractionId"]=controllers.attractionId;
-            controllers.orderFormData["date"]=formData.get("selectDate");
-            controllers.orderFormData["time"]=formData.get("timeInterval");
-            controllers.orderFormData["price"]=views.tripPrice;
+            controllers.bookingFormData["attractionId"]=controllers.attractionId;
+            controllers.bookingFormData["date"]=formData.get("selectDate");
+            controllers.bookingFormData["time"]=formData.get("timeInterval");
+            controllers.bookingFormData["price"]=views.tripPrice;
             controllers.submitCheckUser();
         });
     },
     // 檢查使用者登入狀態(向user API確認)
     submitCheckUser:function(){
-        let src=window.location.origin+"/api/user";   //window.location.origin 伺服器主機網址
+        const src=window.location.origin+"/api/user";   //window.location.origin 伺服器主機網址
         models.getAPIData("GET", src).then(()=>{
             if (models.data.data==="null"){
                 // 使用user.js中function:showSignIn呈現登入面板，且是因點擊[開始預定行程]按鈕而彈出
@@ -189,14 +189,16 @@ let controllers={
     },
     // 向booking API傳送資料
     submitDataAction:function(){
-        let src=window.location.origin+"/api/booking";   //window.location.origin 伺服器主機網址
-        models.getAPIData("POST", src, controllers.orderFormData).then(()=>{
+        const src=window.location.origin+"/api/booking";   //window.location.origin 伺服器主機網址
+        models.getAPIData("POST", src, controllers.bookingFormData).then(()=>{
             if (models.responseStatus===200){
                 // 資料輸入成功，導向booking頁面
                 window.location.assign(window.location.origin+"/booking");
             }else{
-                // 顯示API所回覆錯誤訊息
-                alert(models.data.message);
+                // 資料輸入失敗，頁面呈現錯誤訊息
+                const bodyDOM=document.querySelector("body");
+                bodyDOM.innerHTML="";
+                bodyDOM.textContent=models.data.message;
             };
         });        
     }

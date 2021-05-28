@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>Taipei Trip 台北一日遊</title>
+    <link href="/css/user.css" rel="styleSheet" type="text/css" media="all" />
+    <link href="/css/thankyou.css" rel="styleSheet" type="text/css" media="all" />
+    <script defer src="/js/thankyou.js"></script>
+    <script defer src="/js/nav.js"></script>
+</head>
+<body>
+    <nav>
+        <div class="nav">
+            <div class="navLeftside"><a id=hyperLink href="/">台北一日遊</a></div>
+            <ul class="navRightside">
+                <li id="getBooking">預定行程</li>
+                <li class="signHide" id="getSignBlock">登入/註冊</li>
+                <li class="signHide" id="getSignOut">登出帳號</li>                
+            </ul>
+        </div>
+    </nav>
+    <main class="mainContainer">
+        <div class="mainSubContainer">
+            <div class="welcomeTitle">您好，<span></span>，已預訂行程如下：</div>
+            <section class="attractionProfile">
+                <img class="image" alt="Attraction">
+                <div class="profile">
+                    <div class="title">台北一日遊：<span></span></div>
+                    <div class="subTitle">日期： <span class="subTitleContent"></span></div>
+                    <div class="subTitle">時間： <span class="subTitleContent"></span></div>
+                    <div class="subTitle">費用： <span class="subTitleContent"></span></div>
+                    <div class="subTitle">地點： <span class="subTitleContent"></span></div>
+                </div>
+            </section>
+        </div>
+        <div class="contactContainer">
+            <div class="welcomeTitle">訂單資訊</div>
+            <div class="subTitle">訂單編號： <span class="subTitleContent"></span></div>
+            <div class="subTitle">付款狀態： <span class="subTitleContent"></span></div>
+            <div class="subTitle">聯絡姓名： <span class="subTitleContent"></span></div>
+            <div class="subTitle">聯絡信箱： <span class="subTitleContent"></span></div>
+            <div class="subTitle">手機號碼： <span class="subTitleContent"></span></div>
+            <div class="remindText">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫。</div>
+        </div>
+    </main>
+    <footer>
+        <div class="footerContent">COPYRIGHT © 2021 台北一日遊</div>
+    </footer>
+    <div class="signBlock" id="signInBlock">
+        <div class="topBorder"></div>
+        <div class="accountContainer">
+            <div class="closeBtn"></div>
+            <div class="accountTitle">登入會員帳號</div>
+            <form class="inputForm" id="signInForm">
+                <input type="email" name="email" inputmode="email" placeholder="輸入電子信箱" required />
+                <input type="password" name="password" placeholder="輸入密碼" required pattern="^\S{4,16}$" /><br/>
+                <button class="signBtn" type="submit">登入帳號</button>
+            </form>
+            <div class="errorAlert" id="signInError"></div>
+            <div class="changeBlock" id="toSignUp">還沒有帳戶？點此註冊</div>
+        </div>
+    </div>
+    <div class="signBlock" id="signUpBlock">
+        <div class="topBorder"></div>
+        <div class="accountContainer">
+            <div class="closeBtn"></div>
+            <div class="accountTitle">註冊會員帳號</div>
+            <form class="inputForm" id="signUpForm">
+                <input type="text" name="nameSignUp" placeholder="輸入姓名" required pattern="^\S{1,60}$" />
+                <input type="email" name="emailSignUp" inputmode="email" placeholder="輸入電子信箱（example@email）" required />
+                <input type="password" name="passwordSignUp" placeholder="輸入密碼（4~16字）" required pattern="^\S{4,16}$" /><br/>
+                <button class="signBtn" type="submit">註冊新帳戶</button>
+            </form>
+            <div class="errorAlert" id="signUpError"></div>
+            <div class="successAlert" id="signUpSuccess"></div>
+            <div class="changeBlock" id="toSignIn">已經有帳戶了？點此登入</div>
+        </div>
+    </div>
+</body>
+</html>

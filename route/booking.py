@@ -2,7 +2,7 @@ from flask import request, make_response
 from flask_restful import Resource
 from module.userMysql import checkUserStatus
 from module.checkdata import checkBookingData
-from module.bookingMysql import submitBookingData, getAttractionData, deletPreData
+from module.bookingMysql import submitBookingData, getAttractionData, deletePreData
 
 class bookingApi(Resource):
     def get(self):
@@ -61,7 +61,7 @@ class bookingApi(Resource):
         searchResult = checkResult[1]
         expendTime = checkResult[2]
         # 刪除資料庫中預定行程資料
-        deleteBookingDataResult = deletPreData(searchResult[0])
+        deleteBookingDataResult = deletePreData(searchResult[0])
         if "error" in deleteBookingDataResult:
             return deleteBookingDataResult, 500
         else:

@@ -6,7 +6,8 @@
     <title>Taipei Trip 台北一日遊</title>
     <link href="/css/booking.css" rel="stylesheet" type="text/css" media="all" />
     <link href="/css/user.css" rel="styleSheet" type="text/css" media="all" />
-    <script async src="/js/booking.js"></script>
+    <script defer src="https://js.tappaysdk.com/tpdirect/v5.7.0"></script>
+    <script defer src="/js/booking.js"></script>
     <script defer src="/js/nav.js"></script>
 </head>
 <body>
@@ -63,15 +64,15 @@
                     <div class="paymentTitle">信用卡付款資訊</div>
                     <div class="inputContainer">
                         <label class="paymentInputTitle">卡片號碼：</label>
-                        <input type="tel" inputmode="numeric" name="creditCardNumber" pattern="[0-9]{14,18}" placeholder="**** **** **** ****" required /><br/>
+                        <div class="form-control card-number"></div>
                     </div>
                     <div class="inputContainer">
                         <label class="paymentInputTitle">過期時間：</label>
-                        <input type="text" inputmode="numeric" name="creditCarTime" pattern="[0-9]*" placeholder="MM/YY" required /><br/>
+                        <div class="form-control expiration-date"></div>
                     </div>
                     <div class="inputContainer">
                         <label class="paymentInputTitle">驗證密碼：</label>
-                        <input type="tel" inputmode="numeric" name="creditCarPassword" pattern="[0-9]{3}" placeholder="CVV" required /><br/>
+                        <div class="form-control ccv"></div>
                     </div>
                 </section>
             </div>
@@ -120,5 +121,5 @@
             <div class="changeBlock" id="toSignIn">已經有帳戶了？點此登入</div>
         </div>
     </div>
-</body>
+</body>    
 </html>
