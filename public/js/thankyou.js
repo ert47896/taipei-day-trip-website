@@ -44,8 +44,12 @@ let views={
         orderDOM[0].textContent=orderingData["number"];
         if (orderingData["status"]===0){
             orderDOM[1].textContent="已完成付款";
+        }else if (orderingData["status"]===10003){
+            orderDOM[1].textContent="付款未完成，信用卡資料錯誤";
+        }else if (orderingData["status"]===10005){
+            orderDOM[1].textContent="付款未完成，銀行端系統錯誤";
         }else{
-            orderDOM[1].textContent="付款未完成";
+            orderDOM[1].textContent="付款未完成，系統內部錯誤，請聯繫服務窗口(02)-12341234";
         };
         orderDOM[2].textContent=orderingData["contact"]["name"];
         orderDOM[3].textContent=orderingData["contact"]["email"];

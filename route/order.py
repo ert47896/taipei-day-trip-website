@@ -16,10 +16,10 @@ class ordersApi(Resource):
         cookieValue = request.cookies.get("sessionId")
         # 檢查使用者是否有cookie，正常回復(True, (user_id, name, email), 查詢當下再延長的expendTime)
         checkResult = checkUserStatus(cookieValue)
-        userId = checkResult[1][0]
-        expendTime = checkResult[2]
         if checkResult == False:
             return {"error":"true", "message":"未登入系統，拒絕存取"}, 403
+        userId = checkResult[1][0]
+        expendTime = checkResult[2]
         # request.get_json()取得post過來的資料
         orderData = request.get_json()
         primeValue = orderData["prime"]
@@ -50,6 +50,8 @@ class ordersApi(Resource):
         if "error" in insertResult:
             # 回傳伺服器內部錯誤訊息
             return insertResult
+        # fetchone得到(queryID, )
+        queryId = insertResult[0]
         # 刪除booking table資料
         deleteResult = deletePreData(userId)
         if "error" in deleteResult:
@@ -80,18 +82,17 @@ class ordersApi(Resource):
         response = requests.post(url=apiurl, headers=requestHeader, data=requestData)
         response = response.json()
         # 3.將tap pay API回復部分資料存到payment_response table
-        insertResult = submitresponseData(response)
+        insertResult = submitresponseData(response, queryId)
         if "error" in insertResult:
             # 回傳伺服器內部錯誤訊息
             return insertResult
-        # 4.tap pay API回復交易成功，修改ordering table該筆訂單為已付款(payment_status=0)
-        if response["status"] == 0:
-            updateResult = updateStatus(response["status"] ,bank_transaction_id)
-            if "error" in updateResult:
-                # 回傳伺服器內部錯誤訊息
-                return updateResult
+        # 4.tap pay API回復交易結果，更新ordering table該筆訂單為付款狀態(payment_status=0成交 payment_status=*錯誤代碼)
+        updateResult = updateStatus(response["status"] ,bank_transaction_id)
+        if "error" in updateResult:
+            # 回傳伺服器內部錯誤訊息
+            return updateResult
         # 5.回復API資料給前端
-        message = "付款失敗"
+        message = response["msg"]
         if response["status"] == 0:
             message = "付款成功"
         responseData={
