@@ -30,9 +30,18 @@ let views={
             let oneContainer=document.createElement("div");
             oneContainer.classList.add("oneContainer");
             const firstUrl=data[i].images[0];
+            let preImg=document.createElement("img");
+            preImg.src="../img/welcome.png";
+            preImg.alt="Loading Backgound";
+            preImg.classList.add("preImg","image");
+            let loadingGif=document.createElement("img");
+            loadingGif.src="../img/loading.gif";
+            loadingGif.alt="Loading Backgound";
+            loadingGif.classList.add("gif");
             let image=document.createElement("img");
             image.src=firstUrl;
             image.alt="Attraction";
+            image.classList.add("image","hidden");
             let attraction=document.createElement("div");
             attraction.classList.add("attraction");
             let title=document.createElement("div");
@@ -55,10 +64,18 @@ let views={
             subtitle.appendChild(subRight);
             attraction.appendChild(title);
             attraction.appendChild(subtitle);
+            oneContainer.appendChild(preImg);
+            oneContainer.appendChild(loadingGif);
             oneContainer.appendChild(image);
             oneContainer.appendChild(attraction);
             oneContainer.appendChild(hyperLink);
             parent.appendChild(oneContainer);
+            // 倒數3秒鐘，隱藏loading圖示，顯示真正景點照片
+            setTimeout(function(){
+                preImg.classList.add("hidden");
+                loadingGif.classList.add("hidden");
+                image.classList.add("show");
+            }, 3000)
         }
         controllers.loadStatusNone=true;    // 該階段畫面呈現完成，更新AJAX讀取狀態為未執行(=true)
     },

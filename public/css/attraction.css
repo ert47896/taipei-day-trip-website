@@ -261,6 +261,7 @@ input[type="radio"]:checked{
 }
 .info{
     line-height:150%;
+    text-align:justify; /*div內文字左右對齊*/
 }
 .infoTitle{
     height:32px;

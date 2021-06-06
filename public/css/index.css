@@ -156,12 +156,23 @@ input[id=keyword]{
     left:0px;
     z-index:1;                  /*讓span向上浮一層*/
 }
-.oneContainer>img{
+.image{
     flex:none;
     height:160px;
     object-fit:cover;
     object-position:center;
-    display:block;                  /*消除img與div間空白*/
+}
+.preImg{
+    display:block;          /*消除img與div間空白*/
+    filter:blur(8px);       /*模糊顯示*/
+}
+.gif{
+    position:absolute;      /*以容器層左上角為起點，將gif擺放到指定位置*/
+    top:45%;                /*移動到y軸 45% 的位置*/
+    left:50%;              /*移動到x軸 50% 的位置*/            
+    transform:translate(-50%, -50%);   /*因物件左上角對齊指定位置，所以x, y軸要往上調整半個物件寬高度才會符合預期位置*/
+    height:30px;
+    width:30px;
 }
 .attraction{
     display:flex;
@@ -231,6 +242,12 @@ footer{
     justify-content:center;
     align-items:center;
 }
+.hidden{
+    display:none;
+}
+.show{
+    display:block;
+}
 @media (min-width:1200px){
     .nav{
         width:1200px;
@@ -254,7 +271,7 @@ footer{
         margin-left:2.5%;   /*單一attraction物件左邊界佔畫面2.5%寬度*/
         margin-right:2.5%;  /*單一attraction物件左邊界佔畫面2.5%寬度*/
     }
-    .oneContainer>img{
+    .image{
         height:180px;
     }
 }
@@ -272,7 +289,7 @@ footer{
             linear-gradient(135deg, #AADDEE 0%, #66AABB 100%);     /*背景漸層效果不變*/
         background-position:right bottom, left top;                    /*改圖片位置在右下角*/
     }
-    .oneContainer>img{
+    .image{
         height:200px;
     }
 }
