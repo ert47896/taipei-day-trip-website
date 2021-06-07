@@ -127,6 +127,11 @@ nav{
     border-top:1px solid #E8E8E8;  /*上框邊線*/
     margin-left:auto;
     margin-right:auto;
+    font-family:"Noto Sans TC";
+    color:#666666;
+}
+.remindText{
+    line-height:150%;
 }
 /* footer */
 footer{

@@ -33,16 +33,23 @@ def submitpaymentData(bank_transaction_id, merchantId, orderPrice, tappayNumber,
     insertQuery = "INSERT INTO payment_query (order_serial_number, merchant_id, amount, tappay_number, detail) VALUES (%s, %s, %s, %s, %s)"
     insertValue = (bank_transaction_id, merchantId, orderPrice, tappayNumber, detail)
     result = insertData(insertQuery, insertValue)
-    return result
+    if "error" in result:
+        # 回傳伺服器內部錯誤訊息
+        return result
+    selectQuery = "SELECT query_id FROM payment_query WHERE order_serial_number = %s"
+    selectValue = (bank_transaction_id, )
+    # 回傳query_id，供payment_response用
+    return sqlSelect(selectQuery, selectValue)
 
-def submitresponseData(data):
-    # get query_id
-    inputQuery = "SELECT query_id FROM payment_query WHERE order_serial_number = %s AND tappay_number = %s"
-    inputValue = (data["bank_transaction_id"], data["order_number"])
-    # 回傳值(query_id, )
-    query_id = sqlSelect(inputQuery, inputValue)
-    insertQuery = "INSERT INTO payment_response (query_id, payment_status, message, rec_trade_id, order_serial_number, amount, tappay_number, acquirer, transaction_time_millis) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-    insertValue = (query_id[0], data["status"], data["msg"], data["rec_trade_id"], data["bank_transaction_id"], data["amount"], data["order_number"], data["acquirer"], data["transaction_time_millis"])
+def submitresponseData(data, queryId):
+    if data["status"] != 0:
+        # 交易未成功
+        insertQuery = "INSERT INTO payment_response (query_id, payment_status, message, rec_trade_id) VALUES (%s, %s, %s, %s)"
+        insertValue = (queryId, data["status"], data["msg"], data["rec_trade_id"])
+    else:
+        #交易成功
+        insertQuery = "INSERT INTO payment_response (query_id, payment_status, message, rec_trade_id, order_serial_number, amount, tappay_number, acquirer, transaction_time_millis) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        insertValue = (queryId, data["status"], data["msg"], data["rec_trade_id"], data["bank_transaction_id"], data["amount"], data["order_number"], data["acquirer"], data["transaction_time_millis"])
     result = insertData(insertQuery, insertValue)
     return result
 

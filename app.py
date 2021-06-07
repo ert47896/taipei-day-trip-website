@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, Blueprint
+from flask import Flask, render_template
 from flask_cors import CORS
 from flask_restful import Api
 from route.attractionApi import attractionsApi, attractionApi
@@ -31,9 +31,10 @@ def thankyou():
 #Api
 app.register_blueprint(attractionsApi, url_prefix="/api")
 app.register_blueprint(attractionApi, url_prefix="/api")
+app.register_blueprint(ordersApi, url_prefix="/api")
+app.register_blueprint(orderApi, url_prefix="/api")
 api.add_resource(userApi, "/api/user")
 api.add_resource(bookingApi, "/api/booking")
-api.add_resource(ordersApi, "/api/orders")
-api.add_resource(orderApi, "/api/order/<orderNumber>")
 
-app.run(host="0.0.0.0", port=3000)
+if __name__ == "__main__":
+	app.run(host="0.0.0.0", port=3000)
