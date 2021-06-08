@@ -141,7 +141,7 @@ let bookingcontrollers={
     loadCheckSign:function(){
         let src=window.location.origin+"/api/user";   //window.location.origin 伺服器主機網址
         bookingmodels.getAPIData("GET", src).then(()=>{
-            if (bookingmodels.data.data==="null"){
+            if (bookingmodels.data.data===null){
                 // 未登入導向首頁
                 window.location.assign(window.location.origin);
             }else{
@@ -159,7 +159,7 @@ let bookingcontrollers={
                 // 讀取資料成功，儲存訂單資料
                 this.bookingData=bookingmodels.data.data;
                 // 將資料呈現(null 或 有訂單)
-                if (this.bookingData === "null"){
+                if (this.bookingData === null){
                     bookingviews.renderNullData(this.userData);
                 }else{
                     bookingviews.renderData(this.userData, this.bookingData);

@@ -129,6 +129,9 @@ let controllers={
             this.rightButtonListener();
             this.submitDataListener();
         });
+        // 設定日期選擇限制
+        const today=new Date().toISOString().split("T")[0];
+        document.getElementsByName("selectDate")[0].setAttribute("min", today);
     },
     // 監聽使用者選擇上午或下午顯示價格
     timeIntervalListener:function(){
@@ -177,7 +180,7 @@ let controllers={
     submitCheckUser:function(){
         const src=window.location.origin+"/api/user";   //window.location.origin 伺服器主機網址
         models.getAPIData("GET", src).then(()=>{
-            if (models.data.data==="null"){
+            if (models.data.data===null){
                 // 使用user.js中function:showSignIn呈現登入面板，且是因點擊[開始預定行程]按鈕而彈出
                 usercontrollers.signinPreSubmit=true;
                 usercontrollers.showSignIn();

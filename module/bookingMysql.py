@@ -27,7 +27,7 @@ def getAttractionData(userId):
     inputValue = (userId, )
     result = sqlSelect(inputQuery, inputValue)
     if result == None:
-        return {"data":"null"}
+        return {"data":None}
     elif "error" in result:
         # 回傳伺服器內部錯誤訊息
         return result
@@ -64,7 +64,7 @@ def sqlSelect(sqlQuery, value):
         connection_object.close()
         return sqlresult
     except:
-        return {"error":"true", "message":"伺服器內部錯誤！"}
+        return {"error":True, "message":"伺服器內部錯誤！"}
 
 def insertData(sqlQuery, value):
     try:
@@ -73,9 +73,9 @@ def insertData(sqlQuery, value):
             cursor.execute(sqlQuery, value)
             connection_object.commit()
         connection_object.close()
-        return {"ok":"true"}
+        return {"ok":True}
     except:
-        return {"error":"true", "message":"伺服器內部錯誤！"}
+        return {"error":True, "message":"伺服器內部錯誤！"}
 
 def deleteRowData(sqlQuery, value):
     try:
@@ -84,6 +84,6 @@ def deleteRowData(sqlQuery, value):
             cursor.execute(sqlQuery, value)
             connection_object.commit()
         connection_object.close()
-        return {"ok":"true"}
+        return {"ok":True}
     except:
-        return {"error":"true", "message":"伺服器內部錯誤！"}
+        return {"error":True, "message":"伺服器內部錯誤！"}

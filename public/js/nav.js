@@ -62,7 +62,7 @@ let usercontrollers={
     // 確認使用者是否已登入
     loadAction:function(){
         usermodels.getData("GET").then(()=>{
-            if (usermodels.data.data==="null"){
+            if (usermodels.data.data===null){
                 //show 登入註冊 hide 登出帳號  
                 userviews.showBlock("getSignBlock");
                 userviews.hideBlock("getSignOut");
@@ -222,7 +222,7 @@ let bookingBtnControllers={
     // 檢查使用者登入狀態(使用user.js中function:getData向user API確認使用者狀態)
     bookingCheckUser:function(){
         usermodels.getData("GET").then(()=>{
-            if (usermodels.data.data==="null"){
+            if (usermodels.data.data===null){
                 // 使用user.js中function:showSignIn呈現登入面板，且是因點擊[預定行程]按鈕而彈出
                 usercontrollers.signinPreBooking=true;              
                 usercontrollers.showSignIn();
