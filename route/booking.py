@@ -1,5 +1,3 @@
-from app import booking
-import json
 from flask import request, make_response, jsonify, Blueprint
 from module.userMysql import checkUserStatus
 from module.checkdata import checkBookingData
