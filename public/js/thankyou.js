@@ -90,7 +90,7 @@ let controllers={
     loadCheckSign:function(){
         const src=window.location.origin+"/api/user";   //window.location.origin 伺服器主機網址
         models.getAPIData(src).then(()=>{
-            if (models.data.data==="null"){
+            if (models.data.data===null){
                 // 未登入導向首頁
                 window.location.assign(window.location.origin);
             }else{
@@ -111,7 +111,7 @@ let controllers={
                 // 讀取資料成功，儲存訂單資料
                 this.orderingData=models.data.data;
                 // 將資料呈現(null 或 有訂單)
-                if (this.orderingData === "null"){
+                if (this.orderingData === null){
                     views.renderNullData(this.userData);
                 }else{
                     views.renderData(this.userData, this.orderingData);

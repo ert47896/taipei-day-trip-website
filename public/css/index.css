@@ -1,5 +1,8 @@
 body{
     margin:0px;
+    display:flex;           /*設置footer可適時填充頁面*/
+    flex-direction:column;
+    height:100vh;           /*可視區高度100%，1vh= 可視區高度/100 */
 }
 nav{
     background-color:#ffffff;
@@ -54,6 +57,7 @@ nav{
 }
 header{
     margin-top:54px;                /*避免物件被freeze視窗遮擋*/
+    flex: none;
     height:320px;
     background-image:url("/img/welcome.png"),                       /*同時套用兩個背景*/
         linear-gradient(135deg, #AADDEE 0%, #66AABB 100%);     /*背景漸層效果*/
@@ -214,7 +218,8 @@ input[id=keyword]{
 }
 footer{
     margin-top:40px;                    /*footer物件與上層間隔40px*/
-    height:104px;
+    flex:auto;
+    min-height:104px;
     background-color:#757575;
     display:flex;                       /*讓子物件水平垂直置中*/
     justify-content:center;

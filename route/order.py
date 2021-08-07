@@ -1,4 +1,4 @@
-from flask import request, make_response, Blueprint
+from flask import request, make_response, Blueprint, jsonify
 from module.bookingMysql import deletePreData
 from module.userMysql import checkUserStatus
 from module.orderMysql import submitorderingData, submitpaymentData, submitresponseData, updateStatus, getOrderData
@@ -17,7 +17,8 @@ def dataForOrder():
     # 檢查使用者是否有cookie，正常回復(True, (user_id, name, email), 查詢當下再延長的expendTime)
     checkResult = checkUserStatus(cookieValue)
     if checkResult == False:
-        return {"error":"true", "message":"未登入系統，拒絕存取"}, 403
+        resp = make_response(jsonify(error=True, message="未登入系統，拒絕存取"), 403)
+        return resp
     userId = checkResult[1][0]
     expendTime = checkResult[2]
     # request.get_json()取得post過來的資料
@@ -33,12 +34,14 @@ def dataForOrder():
     # 檢查使用者提供資料正確性
     checkDataResult = checkOrderData(primeValue, attractionId, orderPrice, orderDate, orderTime, name, email, phone)
     if checkDataResult == False:
-        return {"error":"true", "message":"建立失敗，輸入資料錯誤"}, 400
+        resp = make_response(jsonify(error=True, message="建立失敗，輸入資料錯誤"), 400)
+        return resp
     # 建立訂單編號和資料，付款狀態為未付款(payment_status=1)
     insertResult = submitorderingData(userId, attractionId, orderDate, orderTime, orderPrice, name, email, phone, payment_status=1)
     if "error" in insertResult:
         # 回傳伺服器內部錯誤訊息
-        return insertResult
+        resp = make_response(jsonify(insertResult))
+        return resp
     # 獲得orderSerialNumber(當下日期+8碼整數)，亦為銀行端訂單編號
     bank_transaction_id = insertResult
     # POST TapPay API 完成付款動作
@@ -49,14 +52,16 @@ def dataForOrder():
     insertResult = submitpaymentData(bank_transaction_id, merchantId, orderPrice, tappayNumber, detail)
     if "error" in insertResult:
         # 回傳伺服器內部錯誤訊息
-        return insertResult
+        resp = make_response(jsonify(insertResult))
+        return resp
     # fetchone得到(queryID, )
     queryId = insertResult[0]
     # 刪除booking table資料
     deleteResult = deletePreData(userId)
     if "error" in deleteResult:
         # 回傳伺服器內部錯誤訊息            
-        return deleteResult
+        resp = make_response(jsonify(deleteResult))
+        return resp
     # 2.建立requestData
     requestData = json.dumps({
         "prime":primeValue,
@@ -85,12 +90,14 @@ def dataForOrder():
     insertResult = submitresponseData(response, queryId)
     if "error" in insertResult:
         # 回傳伺服器內部錯誤訊息
-        return insertResult
+        resp = make_response(jsonify(insertResult))
+        return resp
     # 4.tap pay API回復交易結果，更新ordering table該筆訂單為付款狀態(payment_status=0成交 payment_status=*錯誤代碼)
     updateResult = updateStatus(response["status"] ,bank_transaction_id)
     if "error" in updateResult:
         # 回傳伺服器內部錯誤訊息
-        return updateResult
+        resp = make_response(jsonify(updateResult))
+        return resp
     # 5.回復API資料給前端
     message = response["msg"]
     if response["status"] == 0:
@@ -104,7 +111,7 @@ def dataForOrder():
             }
         }
     }
-    resp = make_response(responseData, 200)
+    resp = make_response(jsonify(responseData), 200)
     resp.set_cookie(key="sessionId", value=cookieValue, expires=expendTime)
     return resp
 
@@ -115,12 +122,15 @@ def dataOrderNumber(orderNumber):
     checkResult = checkUserStatus(cookieValue)
     expendTime = checkResult[2]
     if checkResult == False:
-        return {"error":"true", "message":"未登入系統，拒絕存取"}, 403
+        resp = make_response(jsonify(error=True, message="未登入系統，拒絕存取"), 403)
+        return resp
     # 取得該訂單資料
     result = getOrderData(orderNumber)
+    respBody = jsonify(result)
     if "error" in result:
         # 回傳伺服器內部錯誤訊息
-        return result
-    resp = make_response(result, 200)
+        resp = make_response(respBody)
+        return resp
+    resp = make_response(respBody, 200)
     resp.set_cookie(key="sessionId", value=cookieValue, expires=expendTime)
     return resp
