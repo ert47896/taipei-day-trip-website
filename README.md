@@ -25,6 +25,12 @@ CVV：123
 * 部署網站於AWS EC2並運用nginx反向代理
 * SSL憑證實踐HTTPS
 
+## 系統架構圖
+![image](https://user-images.githubusercontent.com/24973056/128725354-a654d19c-4224-452c-9b8d-cdb72ee440da.png)
+
+## MySQL資料庫架構圖
+![image](https://user-images.githubusercontent.com/24973056/128726139-5cae936a-d98f-42e5-b133-8aad9d911aa6.png)
+
 ## 網站導覽
 ### 首頁
 1. 應用無限捲軸供使用者滑動滾輪瀏覽接續12筆景點
