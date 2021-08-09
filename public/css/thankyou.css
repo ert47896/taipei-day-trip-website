@@ -1,9 +1,12 @@
 body{
     margin:0px;
     display:none;
+
 }
 .bodySign{
-    display:block;
+    display:flex;           /*設置footer可適時填充頁面*/
+    flex-direction:column;
+    height:100vh;           /*可視區高度100%，1vh= 可視區高度/100 */
 }
 .bodyNoneData{
     display:flex;           /*設置footer可適時填充頁面*/
@@ -138,8 +141,9 @@ footer{
     flex:auto;
     min-height:104px;
     background-color:#757575;
-    display:flex;                   /*讓子物件水平置中*/
+    display:flex;                   /*讓子物件水平垂直置中*/
     justify-content:center;
+    align-items:center;
 }
 .footerContent{
     font-family:"Noto Sans TC";
@@ -147,7 +151,6 @@ footer{
     font-size:16px;
     line-height:100%;
     color:#FFFFFF;
-    margin-top:45px;            /*上外邊界45px*/
 }
 @media (min-width:1200px){
     .nav, .mainContainer{
