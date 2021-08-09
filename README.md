@@ -17,13 +17,13 @@ CVV：123
 
 ## 使用技術
 * Python Flask
-* 以HTML + CSS完成RWD網頁
-* 採MVC架構編寫Javascript
-* 使用MySQL儲存景點與使用者資訊
-* 串接TayPay金流
-* 採RESTful架構設計網站API
-* 部署網站於AWS EC2並運用nginx反向代理
-* SSL憑證實踐HTTPS
+* 以 HTML + CSS 完成 RWD 網頁
+* 採 MVC 架構編寫 Javascript
+* 使用 MySQL 儲存景點與使用者資訊
+* 串接 TayPay 金流
+* 採 RESTful 架構設計網站 API
+* 部署網站於 AWS EC2 並運用 Nginx 反向代理
+* SSL 憑證實踐 HTTPS
 
 ## 系統架構圖
 ![image](https://user-images.githubusercontent.com/24973056/128726778-92dcdc79-4562-4d25-83ea-9f28456b28f8.png)
