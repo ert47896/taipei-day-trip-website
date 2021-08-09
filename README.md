@@ -57,11 +57,3 @@ CVV：123
 顯示該筆訂單行程資訊及付款狀態
 
 ![image](https://user-images.githubusercontent.com/24973056/128674101-a9ab6c32-54fc-4bd7-a8a1-570b872f095a.png)
-
-### RWD頁面
-
-![image](https://user-images.githubusercontent.com/24973056/128669448-7d1b6d2e-62ec-4dd6-b3f6-b881c46f1c47.png)
-![image](https://user-images.githubusercontent.com/24973056/128674106-d89150de-4717-4c8f-806f-b00b0486a2cf.png)
-
-![image](https://user-images.githubusercontent.com/24973056/128672208-9c343b20-8a93-4d54-9a07-bc02030d2c39.png)
-![image](https://user-images.githubusercontent.com/24973056/128672911-a3805ae0-5d2d-40f9-8d6c-e676f4a895b5.png)
