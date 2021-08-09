@@ -28,7 +28,7 @@ CVV：123
 ## 系統架構圖
 ![image](https://user-images.githubusercontent.com/24973056/128726778-92dcdc79-4562-4d25-83ea-9f28456b28f8.png)
 
-## MySQL資料庫架構圖
+## MySQL 資料庫架構圖
 ![image](https://user-images.githubusercontent.com/24973056/128726139-5cae936a-d98f-42e5-b133-8aad9d911aa6.png)
 
 ## 網站導覽
