@@ -16,11 +16,12 @@ Date：01/23<br>
 CVV：123
 
 ## 使用技術
-* Python Flask
-* 以 HTML + CSS 完成 RWD 網頁
-* 採 MVC 架構編寫 Javascript
-* 使用 MySQL 儲存景點與使用者資訊
-* 串接 TayPay 金流
+* 以 Python Flask 框架建立網站
+* 應用 HTML + CSS 完成 RWD 網頁
+* 採 MVC 架構編寫後端 Python 與前端 Javascript
+* 使用 MySQL 儲存景點、會員與訂單資訊
+* 設定 index 及 foreign key 於 MySQL 資料庫
+* 串接 TayPay 第三方金流
 * 採 RESTful 架構設計網站 API
 * 部署網站於 AWS EC2 並運用 Nginx 反向代理
 * SSL 憑證實踐 HTTPS
