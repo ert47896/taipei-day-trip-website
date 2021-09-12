@@ -1,4 +1,4 @@
-# [台北一日遊](https://taipeilife.info/) 旅遊電商網站
+# [台北一日遊] 旅遊電商網站
 
 本網站依據[台北旅遊網景點資料](https://data.taipei/#/dataset/detail?id=bd31c976-d3a5-4eed-b8c3-7454bc266afa)建置，功能包括：
 * 首頁瀏覽、搜尋景點
@@ -7,7 +7,6 @@
 * 串接TapPay金流付款供線上預訂導覽行程
 
 ## Demo
-台北一日遊網站：https://taipeilife.info/<br>
 測試帳號：test@test.com (或自行註冊)<br>
 密碼：1234
 
