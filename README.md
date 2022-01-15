@@ -1,19 +1,10 @@
-# [台北一日遊](https://trip.taipeilife.site/) 旅遊電商網站
+# 台北一日遊旅遊電商網站
 
 本網站依據[台北旅遊網景點資料](https://data.taipei/#/dataset/detail?id=bd31c976-d3a5-4eed-b8c3-7454bc266afa)建置，功能包括：
 * 首頁瀏覽、搜尋景點
 * 會員系統註冊、登入
 * 個別景點獨立分頁介紹
 * 串接TapPay金流付款供線上預訂導覽行程
-
-## Demo
-台北一日遊網站：https://trip.taipeilife.site/<br>
-測試帳號：test@test.com (或自行註冊)<br>
-密碼：1234
-
-Credit Card：4242 4242 4242 4242<br>
-Date：01/23<br>
-CVV：123
 
 ## 使用技術
 * 以 Python Flask 框架建立網站
