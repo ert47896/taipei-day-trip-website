@@ -8,7 +8,7 @@ userdb=connect(
     host="localhost",
     user=os.getenv("db_user"),
     password=os.getenv("db_password"),
-    database="stage2"
+    database="taipeitrip"
 )
 
 with open("taipei-attractions.json", "r", encoding="utf-8") as input:

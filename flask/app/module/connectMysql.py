@@ -9,7 +9,7 @@ pool_setting = pooling.MySQLConnectionPool(
     host="localhost",
     user=os.getenv("db_user"),
     password=os.getenv("db_password"),
-    database="stage2",
+    database="taipeitrip",
     pool_name="mypool",
     pool_size=5
 )
