@@ -1,34 +1,39 @@
 version: '3.8'
 
 services:
- web:
-  build:
-   context: ./flask
-  ports:
-    - 9000:9000
-  volumes:
-    - ./flask:/workspace/flask
-  depends_on:
-    mysqldb:
-      condition: service_healthy
-  container_name: trip
+  web:
+    build:
+      context: ./flask
+    ports:
+      - 9000:9000
+    volumes:
+      - ./flask:/workspace/flask
+    networks:
+      - proxy
+      - database
+    container_name: trip
 
- mysqldb:
-  image: mysql
-  ports:
-    - 53306:3306
-  environment:
-    MYSQL_ROOT_PASSWORD: root
-    MYSQL_DATABASE: taipeitrip
-  healthcheck:
-    test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-    timeout: 10s
-    retries: 5
-  volumes:
-    - mysql:/var/lib/mysql
-    - mysql_config:/etc/mysql
-  container_name: db_trip
+  nginx:
+    build:
+      contex: ./nginx
+    restart: always
+    depends_on:
+      - web
+    volumes:
+      - ./flask:/workspace/flask
+      - /var/log/trip_web:/var/log/nginx
+    networks:
+      - proxy
+    environment:
+      - VIRTUAL_HOST=trip.taipeilife.site
+      - LETSENCRYPT_HOST=trip.taipeilife.site
+    container_name: proxied-trip
 
-volumes:
-  mysql:
-  mysql_config:
+networks:
+  proxy:
+    external: true
+    name: self-nginx-proxy
+
+  database:
+    external: true
+    name: self-mysql
