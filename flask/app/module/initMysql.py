@@ -30,8 +30,8 @@ spot"""
 executeTable(
 """CREATE TABLE spot(
 attraction_id INT AUTO_INCREMENT PRIMARY KEY,
-name VARCHAR(100),
-category VARCHAR(100),
+name VARCHAR(128),
+category VARCHAR(128),
 description TEXT,
 address TINYTEXT,
 transport TEXT,
@@ -44,11 +44,11 @@ images TEXT)"""
 executeTable(
 """CREATE TABLE user(
 user_id INT AUTO_INCREMENT PRIMARY KEY,
-name VARCHAR(60) NOT NULL,
-email VARCHAR(120) UNIQUE NOT NULL,
-password VARCHAR(16) NOT NULL,
+name VARCHAR(64) NOT NULL,
+email VARCHAR(128) UNIQUE NOT NULL,
+password VARCHAR(128) NOT NULL,
 signup_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-sessionid VARCHAR(255) UNIQUE,
+sessionid VARCHAR(256) UNIQUE,
 session_expiretime DOUBLE(15,4))"""
 )
 
@@ -58,7 +58,7 @@ booking_id INT AUTO_INCREMENT PRIMARY KEY,
 user_id INT,
 attraction_id INT,
 trip_date DATE NOT NULL,
-trip_time VARCHAR(10) NOT NULL,
+trip_time VARCHAR(16) NOT NULL,
 trip_price SMALLINT NOT NULL,
 create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES user (user_id) ON UPDATE CASCADE,
@@ -72,11 +72,11 @@ order_serial_number VARCHAR(16) PRIMARY KEY,
 user_id INT,
 attraction_id INT,
 trip_date DATE NOT NULL,
-trip_time VARCHAR(10) NOT NULL,
+trip_time VARCHAR(16) NOT NULL,
 trip_price SMALLINT NOT NULL,
-name VARCHAR(60) NOT NULL,
-email VARCHAR(120) NOT NULL,
-phone VARCHAR(15) NOT NULL,
+name VARCHAR(64) NOT NULL,
+email VARCHAR(128) NOT NULL,
+phone VARCHAR(16) NOT NULL,
 payment_status VARCHAR(6) NOT NULL,
 create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 CONSTRAINT fk_ordering_user_id FOREIGN KEY (user_id) REFERENCES user (user_id) ON UPDATE CASCADE,
@@ -88,10 +88,10 @@ executeTable(
 """CREATE TABLE payment_query(
 query_id INT AUTO_INCREMENT PRIMARY KEY,
 order_serial_number VARCHAR(16),
-merchant_id VARCHAR(50) NOT NULL,
+merchant_id VARCHAR(64) NOT NULL,
 amount SMALLINT NOT NULL,
-tappay_number VARCHAR(3) NOT NULL,
-detail VARCHAR(100) NOT NULL,
+tappay_number VARCHAR(4) NOT NULL,
+detail VARCHAR(128) NOT NULL,
 create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 CONSTRAINT fk_payment_query_order_serial_number FOREIGN KEY (order_serial_number) REFERENCES ordering (order_serial_number) ON UPDATE CASCADE
 )"""
@@ -101,14 +101,14 @@ executeTable(
 """CREATE TABLE payment_response(
 response_id INT AUTO_INCREMENT PRIMARY KEY,
 query_id INT,
-payment_status VARCHAR(6) NOT NULL,
+payment_status VARCHAR(8) NOT NULL,
 message TINYTEXT NOT NULL,
-rec_trade_id VARCHAR(20) NOT NULL,
+rec_trade_id VARCHAR(32) NOT NULL,
 order_serial_number VARCHAR(16) NOT NULL,
 amount SMALLINT NOT NULL,
-tappay_number VARCHAR(3) NOT NULL,
+tappay_number VARCHAR(4) NOT NULL,
 acquirer VARCHAR(50) NOT NULL,
-transaction_time_millis VARCHAR(15) NOT NULL,
+transaction_time_millis VARCHAR(16) NOT NULL,
 create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 CONSTRAINT fk_payment_response_quary_id FOREIGN KEY (query_id) REFERENCES payment_query (query_id) ON UPDATE CASCADE
 )"""
