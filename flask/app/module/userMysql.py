@@ -2,6 +2,7 @@ from module.connectMysql import connection_pool
 import secrets
 import time
 from hashlib import sha256
+from werkzeug.security import check_password_hash, generate_password_hash
 
 cookieLiveTime = 20 * 60
 
@@ -11,7 +12,7 @@ def checkSignUp(email, password, name):
     result = sqlSelect(inputQuery, inputValue)
     if result == None:
         insertQuery = "INSERT INTO user (name, email, password) VALUES (%s, %s, %s)"
-        insertValue = (name, email, password)
+        insertValue = (name, email, generate_password_hash(password))
         return signUp(insertQuery, insertValue)
     elif "error" in result:
         return result
@@ -19,20 +20,26 @@ def checkSignUp(email, password, name):
         return {"error":True, "message":"Email重複註冊！"}
 
 def checkSignIn(email, password):
-    inputQuery = "SELECT user_id FROM user WHERE email = %s AND password = %s"
-    inputValue = (email, password)
-    result = sqlSelect(inputQuery, inputValue)
-    if result == None:
+    inputQuery = "SELECT user_id, password FROM user WHERE email = %s"
+    inputValue = (email, )
+    # Two results in Tuple, user_id and password
+    passwordResult = sqlSelect(inputQuery, inputValue)
+    # Account alive then check password
+    if passwordResult:
+        checkPassword = check_password_hash(passwordResult[1], password)
+    print(passwordResult, checkPassword)
+    if (passwordResult == None) or (checkPassword == False):
         return {"error":True, "message":"電子郵件或密碼錯誤！"}
-    elif "error" in result:
-        return result
+    elif "error" in passwordResult:
+        return passwordResult
     else:
         additionString = secrets.token_hex(16)
         cookieValue = cookieValue=sha256((email + additionString).encode("utf-8")).hexdigest()
         cookieExpireTime = time.time() + cookieLiveTime
         updateQuery = "UPDATE user SET sessionid = %s, session_expiretime = %s WHERE user_id = %s"
-        updateValue = (cookieValue, cookieExpireTime, result[0])
+        updateValue = (cookieValue, cookieExpireTime, passwordResult[0])
         updateResult = updateCookie(updateQuery, updateValue)
+        print(updateResult, cookieValue, cookieExpireTime)
         return (updateResult, cookieValue, cookieExpireTime)
 
 def searchExpire(cookieId):
