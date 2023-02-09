@@ -2,7 +2,7 @@ from connectMysql import connection_pool
 import time
 
 # Create tables
-def createTable(sqlQuery):
+def executeTable(sqlQuery):
     try:
         connection_object = connection_pool.get_connection()
         with connection_object.cursor() as cursor:
@@ -18,7 +18,16 @@ def createTable(sqlQuery):
             cursor.close()
             connection_object.close()
 
-createTable(
+executeTable(
+"""DROP TABLE IF EXISTS payment_response,
+payment_query,
+ordering,
+booking,
+user,
+spot"""
+)
+
+executeTable(
 """CREATE TABLE spot(
 attraction_id INT AUTO_INCREMENT PRIMARY KEY,
 name VARCHAR(100),
@@ -32,7 +41,7 @@ longitude DECIMAL(10,7),
 images TEXT)"""
 )
 
-createTable(
+executeTable(
 """CREATE TABLE user(
 user_id INT AUTO_INCREMENT PRIMARY KEY,
 name VARCHAR(60) NOT NULL,
@@ -43,7 +52,7 @@ sessionid VARCHAR(255) UNIQUE,
 session_expiretime DOUBLE(15,4))"""
 )
 
-createTable(
+executeTable(
 """CREATE TABLE booking(
 booking_id INT AUTO_INCREMENT PRIMARY KEY,
 user_id INT,
@@ -57,7 +66,7 @@ CONSTRAINT fk_attraction_id FOREIGN KEY (attraction_id) REFERENCES spot (attract
 )"""
 )
 
-createTable(
+executeTable(
 """CREATE TABLE ordering(
 order_serial_number VARCHAR(16) PRIMARY KEY,
 user_id INT,
@@ -75,7 +84,7 @@ CONSTRAINT fk_ordering_attraction_id FOREIGN KEY (attraction_id) REFERENCES spot
 )"""
 )
 
-createTable(
+executeTable(
 """CREATE TABLE payment_query(
 query_id INT AUTO_INCREMENT PRIMARY KEY,
 order_serial_number VARCHAR(16),
@@ -88,7 +97,7 @@ CONSTRAINT fk_payment_query_order_serial_number FOREIGN KEY (order_serial_number
 )"""
 )
 
-createTable(
+executeTable(
 """CREATE TABLE payment_response(
 response_id INT AUTO_INCREMENT PRIMARY KEY,
 query_id INT,
