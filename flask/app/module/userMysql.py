@@ -27,7 +27,6 @@ def checkSignIn(email, password):
     # Account alive then check password
     if passwordResult:
         checkPassword = check_password_hash(passwordResult[1], password)
-    print(passwordResult, checkPassword)
     if (passwordResult == None) or (checkPassword == False):
         return {"error":True, "message":"電子郵件或密碼錯誤！"}
     elif "error" in passwordResult:
@@ -39,7 +38,6 @@ def checkSignIn(email, password):
         updateQuery = "UPDATE user SET sessionid = %s, session_expiretime = %s WHERE user_id = %s"
         updateValue = (cookieValue, cookieExpireTime, passwordResult[0])
         updateResult = updateCookie(updateQuery, updateValue)
-        print(updateResult, cookieValue, cookieExpireTime)
         return (updateResult, cookieValue, cookieExpireTime)
 
 def searchExpire(cookieId):
