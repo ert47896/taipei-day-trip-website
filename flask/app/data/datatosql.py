@@ -5,13 +5,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 userdb=connect(
-    host="localhost",
+    host="mysqldb",
     user=os.getenv("db_user"),
     password=os.getenv("db_password"),
     database="taipeitrip"
 )
 
-with open("taipei-attractions.json", "r", encoding="utf-8") as input:
+with open("/workspace/flask/app/data/taipei-attractions.json", "r", encoding="utf-8") as input:
     data = json.load(input)
     spotData = data["result"]["results"]
     with userdb.cursor() as cursor:
