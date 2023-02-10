@@ -18,14 +18,19 @@ def executeTable(sqlQuery):
             cursor.close()
             connection_object.close()
 
-executeTable(
-"""DROP TABLE IF EXISTS payment_response,
-payment_query,
-ordering,
-booking,
-user,
-spot"""
-)
+# If data in table then exit this scrip
+try:
+    connection_object = connection_pool.get_connection()
+    with connection_object.cursor() as cursor:
+        cursor.execute("SELECT name FROM spot LIMIT 1")
+        sqlresult = cursor.fetchone()
+    connection_object.close()
+    print(sqlresult)
+    if sqlresult:
+        exit()
+except Exception as error:
+    with open("errorinsql.txt", "a") as outfile:
+        outfile.writelines(str(error) + "from initMysql")
 
 executeTable(
 """CREATE TABLE spot(
