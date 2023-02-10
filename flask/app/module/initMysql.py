@@ -25,7 +25,6 @@ try:
         cursor.execute("SELECT name FROM spot LIMIT 1")
         sqlresult = cursor.fetchone()
     connection_object.close()
-    print(sqlresult)
     if sqlresult:
         exit()
 except Exception as error:
