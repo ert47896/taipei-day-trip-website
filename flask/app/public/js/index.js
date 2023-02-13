@@ -4,7 +4,7 @@ let models={
     pageNum:0,
     // 搜尋關鍵字
     keywordInput:null,
-    // api回復資料
+    // api回復資料變
     data:null,
     // 向api索取景點資料
     getData:function(pages, keyword=null){
