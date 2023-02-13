@@ -1,4 +1,4 @@
-name: Taipei Trip CI/CD
+name: Taipei Trip CI
 
 # control the flow
 on:
