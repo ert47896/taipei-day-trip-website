@@ -1,0 +1,54 @@
+name: Taipei Trip CI/CD
+
+# control the flow
+on:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-20.04
+    if: github.ref != 'refs/heads/main'
+    steps:
+      - name: Check the files
+        uses: actions/checkout@v3
+    
+      - name: Build the .env file for Flask application
+        run: |
+          cd flask/app/
+          echo "${{ secret.ENV_FILE }}" > .env #缺資料
+          
+      - name: Build Docker network for next step use
+        run: |
+          docker network create self-nginx-proxy
+          
+      - name: Run Docker Compose to start MySQL for Taipei Trip website
+        run: |
+          docker compose -f docker-compose-db-forCI.yml up -d #缺資料
+      
+      - name: Run Docker Compose to start Taipei Trip website
+        run: |
+          docker compose up --build -d
+      
+  deploy:
+    runs-on: ubuntu-20.04
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Check the files
+        uses: actions/checkout@v3
+      - name: Deploy to EC2
+        env:
+          PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          REMOTE_HOST: ${{ secrets.HOST_DNS }}
+          REMOTE_USER: ${{ secrets.USERNAME }}
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${REMOTE_USER}@{REMOTE_HOST} '
+          cd trip
+          git pull origin main
+          sudo docker compose stop
+          sudo docker compose start
+          '
