@@ -29,7 +29,7 @@ CVV：123
 * Used HTML and CSS to accomplish RWD
 
 ## System Architecture Diagrame
-![Taipei Trip Architecture](https://user-images.githubusercontent.com/24973056/218961980-18063934-7d91-4f9e-94ff-65d840b73fe7.png)
+![Taipei Trip Architecture](https://user-images.githubusercontent.com/24973056/218973527-17698e8d-98c4-4f72-b9c7-368af2e930dd.png)
 
 ## MySQL Database Scheam
 ![Trip_DB_ERdiagram](https://user-images.githubusercontent.com/24973056/218967800-01b617cf-d21b-419a-96d2-77acfda65220.png)
