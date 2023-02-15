@@ -1,35 +1,37 @@
-# [台北一日遊](https://trip.taipeilife.site/) 旅遊電商網站
+# [Taipei Trip](https://trip.taipeilife.site/) 旅遊電商網站
 
-本網站依據[台北旅遊網景點資料](https://data.taipei/#/dataset/detail?id=bd31c976-d3a5-4eed-b8c3-7454bc266afa)建置，功能包括：
-* 首頁瀏覽、搜尋景點
-* 會員系統註冊、登入
-* 個別景點獨立分頁介紹
-* 串接TapPay金流付款供線上預訂導覽行程
+This website is built with the Taipei City tourist attractions from [Taipei Open Data Platform](https://data.taipei/#/dataset/detail?id=bd31c976-d3a5-4eed-b8c3-7454bc266afa).
+Features include:
+* Browse and Search attractions on the homepage
+* Membership system for sign up / sign in
+* Shopping cart system for booking the attraction guide
+* Integrate TapPay SDK for providing online payment service
 
 ## Demo
-台北一日遊網站：https://trip.taipeilife.site/<br>
-測試帳號：test@test.com (或自行註冊)<br>
-密碼：test
+Taipei Trip website：https://trip.taipeilife.site/<br>
 
+#### For sign in
+Test Account：test@test.com (or sign up new user)<br>
+Test Password：test
+
+#### For payment verification
 Credit Card：4242 4242 4242 4242<br>
-Date：01/23<br>
+Date：01/24<br>
 CVV：123
 
-## 使用技術
-* 以 Python Flask 框架建立網站
-* 採 MVC 架構編寫後端 Python 與前端 Javascript
-* 採 RESTful 架構設計網站 API
-* 使用 MySQL 儲存景點、會員與訂單資訊
-* 設定 Index 及 Foreign key 於 MySQL 資料庫
-* 應用 HTML + CSS 完成 RWD 網頁
-* 串接 TayPay 第三方金流
-* 部署網站於 AWS EC2 並運用 Nginx 反向代理
-* 透由 Let's Encrypt 申請 SSL 憑證實踐 HTTPS
+## Skills
+* Created with Python Flask
+* Used MVC design pattern in Python and Javascript
+* Combined Nginx, Flask, MySQL and Let's Encrypt(auto renew SSL certification) with Docker Compose for rapid deployment
+* Built RESTful style API
+* Used MySQL for storing data and applied Index & Foreign key
+* Integrate Third-party payment: TapPay SDK
+* Used HTML and CSS to accomplish RWD
 
-## 系統架構圖
+## System Architecture Diagrame
 ![image](https://user-images.githubusercontent.com/24973056/128726778-92dcdc79-4562-4d25-83ea-9f28456b28f8.png)
 
-## MySQL 資料庫架構圖
+## MySQL Database Scheam
 ![image](https://user-images.githubusercontent.com/24973056/128726139-5cae936a-d98f-42e5-b133-8aad9d911aa6.png)
 
 ## 網站導覽
